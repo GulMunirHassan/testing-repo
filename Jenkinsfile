@@ -18,7 +18,7 @@ pipeline {
             steps {
                 // Set up Python virtual environment
                 sh """
-                    C:\Users\IntraPC\AppData\Local\Programs\Python\Python312/python -m venv venv
+                    $C:\Users\IntraPC\AppData\Local\Programs\Python\Python312/python -m venv venv
                     source venv/bin/activate
                 """
 
@@ -29,7 +29,7 @@ pipeline {
                 script {
                     def scannerHome = tool 'SonarQubeScanner'
                     withSonarQubeEnv('testingSonarQube') {
-                        sh "C:\Users\IntraPC\Downloads\sonarqube\bin\windows-x86-64\SonarService"
+                        sh "$C:\Users\IntraPC\Downloads\sonarqube\bin\windows-x86-64\SonarService"
                     }
                 }
             }
