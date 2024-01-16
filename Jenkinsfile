@@ -15,12 +15,6 @@ pipeline {
 
         stage('Build and Analyze') {
             steps {
-                // Set up Python virtual environment
-                script {
-                    bat 'C:\\Users\\IntraPC\\AppData\\Local\\Programs\\Python\\Python312\\python -m venv venv'
-                    bat 'venv\\Scripts\\activate'
-                }
-
                 // Run SonarQube analysis
                 script {
                     def scannerHome = tool 'SonarQube'
@@ -28,16 +22,6 @@ pipeline {
                         sh "$scannerHome/bin/sonar-scanner"
                     }
                 }
-            }
-        }
-    }
-
-    post {
-        always {
-            // Clean up
-            script {
-                bat 'venv\\Scripts\\deactivate' // Deactivate Python virtual environment
-                deleteDir()
             }
         }
     }
