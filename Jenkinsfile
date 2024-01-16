@@ -1,34 +1,30 @@
 pipeline {
     agent any
 
-    environment {
-        SONAR_QUBE_SCANNER_HOME = tool 'SonarQube'
+    tools {
+        git 'Git' // Specify the name of the Git tool configured in Jenkins
     }
 
     stages {
         stage('Checkout') {
             steps {
                 // Checkout code from GitHub
-                git 'https://github.com/GulMunirHassan/testing-repo.git'
+                git branch: 'main', url: 'https://github.com/GulMunirHassan/testing-repo.git'
             }
         }
 
         stage('Build and Analyze') {
             steps {
                 // Set up Python virtual environment
-                bat 'C:\\Users\\IntraPC\\AppData\\Local\\Programs\\Python\\Python312\\python -m venv venv'
-                bat 'venv\\Scripts\\activate'
-
-                // Install Python dependencies
-                bat 'pip install -r requirements.txt'
+                script {
+                    // Your existing setup code
+                }
 
                 // Run SonarQube analysis
                 script {
                     def scannerHome = tool 'SonarQube'
-                    withSonarQubeEnv('SonarQube') {
-                        bat 'C:\\Users\\IntraPC\\Downloads\\sonarqube\\bin\\windows-x86-64\\SonarScanner.MSBuild.exe begin /k:"testingSonarQube" /n:"testingSonarQube" /v:"1.0"'
-                        bat 'MSBuild.exe /t:Rebuild'
-                        bat 'C:\\Users\\IntraPC\\Downloads\\sonarqube\\bin\\windows-x86-64\\SonarScanner.MSBuild.exe end'
+                    withSonarQubeEnv('testingSonarQube') {
+                        sh "$scannerHome/bin/sonar-scanner"
                     }
                 }
             }
@@ -38,8 +34,9 @@ pipeline {
     post {
         always {
             // Clean up
-            bat 'venv\\Scripts\\deactivate' // Deactivate Python virtual environment
-            deleteDir()
+            script {
+                // Your existing cleanup code
+            }
         }
     }
 }
