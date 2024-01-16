@@ -17,19 +17,19 @@ pipeline {
         stage('Build and Analyze') {
             steps {
                 // Set up Python virtual environment
-                sh """
-                    $C:\Users\IntraPC\AppData\Local\Programs\Python\Python312/python -m venv venv
-                    source venv/bin/activate
-                """
+                bat 'C:\\Users\\IntraPC\\AppData\\Local\\Programs\\Python\\Python312\\python -m venv venv'
+                bat 'venv\\Scripts\\activate'
 
                 // Install Python dependencies
-                sh 'pip install -r requirements.txt'
+                bat 'pip install -r requirements.txt'
 
                 // Run SonarQube analysis
                 script {
                     def scannerHome = tool 'SonarQubeScanner'
                     withSonarQubeEnv('testingSonarQube') {
-                        sh "$C:\Users\IntraPC\Downloads\sonarqube\bin\windows-x86-64\SonarService"
+                        bat 'C:\\Users\\IntraPC\\Downloads\\sonarqube\\bin\\windows-x86-64\\SonarScanner.MSBuild.exe begin /k:"testingSonarQube" /n:"testingSonarQube" /v:"1.0"'
+                        bat 'MSBuild.exe /t:Rebuild'
+                        bat 'C:\\Users\\IntraPC\\Downloads\\sonarqube\\bin\\windows-x86-64\\SonarScanner.MSBuild.exe end'
                     }
                 }
             }
@@ -39,7 +39,7 @@ pipeline {
     post {
         always {
             // Clean up
-            sh 'deactivate' // Deactivate Python virtual environment
+            bat 'venv\\Scripts\\deactivate' // Deactivate Python virtual environment
             deleteDir()
         }
     }
