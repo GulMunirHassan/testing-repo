@@ -1,13 +1,14 @@
 pipeline {
-  agent any
+  agent { label 'windows' }
   options {
     buildDiscarder(logRotator(numToKeepStr: '5'))
   }
   stages {
     stage('Scan') {
       steps {
-        withSonarQubeEnv(installationName: 'testingSonarQube') {
-          sh './mvnw clean sonar:sonar' // Fix the typo here
+        script {
+          // Use 'mvnw.cmd' on Windows
+          bat './mvnw.cmd clean sonar:sonar'
         }
       }
     }
