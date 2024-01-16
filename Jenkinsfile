@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         SONAR_QUBE_SCANNER_HOME = tool 'SonarQube'
-        PYTHON_HOME = tool 'Python3'
+        PYTHON_HOME = tool 'C:\Users\IntraPC\AppData\Local\Programs\Python\Python312\python'
     }
 
     stages {
