@@ -20,8 +20,9 @@ stage('Build and Analyze') {
             withSonarQubeEnv('testingSonarQube') {
                 sh """
                     ${scannerHome}/bin/sonar-scanner \
-                    -Dsonar.host.url='localhost:9000' \
-                    -Dsonar.login='sqp_40be0bcd4d6ecf4945fc3c1fbe60cfc9cb952f4e'
+                    -X \
+                    -Dsonar.host.url=localhost:9000 \
+                    -Dsonar.login=sqp_40be0bcd4d6ecf4945fc3c1fbe60cfc9cb952f4e
                 """
             }
         }
