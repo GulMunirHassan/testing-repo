@@ -13,16 +13,16 @@ pipeline {
             }
         }
 
-        stage('Build and Analyze') {
-            steps {
-                // Run SonarQube analysis
-                script {
-                    def scannerHome = tool 'SonarQube'
-                    withSonarQubeEnv('testingSonarQube') {
-                        sh "$scannerHome/bin/sonar-scanner"
-                    }
+    stage('Build and Analyze') {
+        steps {
+            // Run SonarQube analysis
+            script {
+                def scannerHome = tool 'SonarQube'
+                withSonarQubeEnv('testingSonarQube') {
+                    bat "${scannerHome}\\bin\\sonar-scanner"
                 }
             }
         }
+    }
     }
 }
