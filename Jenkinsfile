@@ -14,15 +14,19 @@ pipeline {
         }
 
     stage('Build and Analyze') {
-        steps {
-            // Run SonarQube analysis
-            script {
-                def scannerHome = tool 'SonarQube'
-                withSonarQubeEnv('testingSonarQube') {
-                    bat "${scannerHome}\\bin\\sonar-scanner"
-                }
+    steps {
+        // Run SonarQube analysis
+        script {
+            def scannerHome = tool 'SonarQube'
+            withSonarQubeEnv('testingSonarQube') {
+                sh """
+                    ${scannerHome}/bin/sonar-scanner \
+                    -Dsonar.scanner.metadataFilePath=${env.WORKSPACE}/sonar-metadata/report-task.txt
+                """
             }
         }
     }
+}
+
     }
 }
