@@ -1,15 +1,15 @@
-pipeline{
+pipeline {
   agent { label 'linux' }
-  options{
+  options {
     buildDiscarder(logRotator(numToKeepStr: '5'))
   }
-Stages{
-  Stage('Scan'){
-    steps {
-        withSonarQubeEnv(installationName: 'testingSonarQube'){
-          sh.'./mvnw clean sonar:sonar'
+  stages {
+    stage('Scan') {
+      steps {
+        withSonarQubeEnv(installationName: 'testingSonarQube') {
+          sh './mvnw clean sonar:sonar' // Fix the typo here
         }
+      }
     }
   }
-}
 }
