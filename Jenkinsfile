@@ -1,5 +1,5 @@
 pipeline {
-  agent any
+  agent { label 'windows' }
   options {
     buildDiscarder(logRotator(numToKeepStr: '5'))
   }
@@ -7,10 +7,11 @@ pipeline {
     stage('Scan') {
       steps {
         script {
-          // Use 'mvnw.cmd' on Windows
-          bat './mvnw.cmd clean sonar:sonar'
+          // Use 'mvnw.cmd' on Windows with the correct path
+          bat '"./mvnw.cmd" clean sonar:sonar'
         }
       }
     }
   }
 }
+
