@@ -13,20 +13,21 @@ pipeline {
             }
         }
 
-    stage('Build and Analyze') {
+stage('Build and Analyze') {
     steps {
-        // Run SonarQube analysis
         script {
             def scannerHome = tool 'SonarQube'
             withSonarQubeEnv('testingSonarQube') {
                 sh """
                     ${scannerHome}/bin/sonar-scanner \
-                    -Dsonar.scanner.metadataFilePath=${env.WORKSPACE}/sonar-metadata/report-task.txt
+                    -Dsonar.host.url='localhost:9000' \
+                    -Dsonar.login='sqp_40be0bcd4d6ecf4945fc3c1fbe60cfc9cb952f4e'
                 """
             }
         }
     }
 }
+
 
     }
 }
