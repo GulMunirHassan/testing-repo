@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     tools {
-        git 'Git' // Specify the name of the Git tool configured in Jenkins
+        git 'Default' // Specify the name of the Git tool configured in Jenkins
     }
 
     stages {
@@ -15,11 +15,6 @@ pipeline {
 
         stage('Build and Analyze') {
             steps {
-                // Set up Python virtual environment
-                script {
-                    // Your existing setup code
-                }
-
                 // Run SonarQube analysis
                 script {
                     def scannerHome = tool 'SonarQube'
