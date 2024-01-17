@@ -1,16 +1,11 @@
-pipeline{
-    agent any
-    options{
-        buildDiscarder(logRotator(numToKeepStr:'5'))
+node {
+  stage('SCM') {
+    checkout scm
+  }
+  stage('SonarQube Analysis') {
+    def scannerHome = tool 'sonar';
+    withSonarQubeEnv() {
+      sh "${scannerHome}/bin/sonar-scanner"
     }
-    stages{
-        stage('Scan'){
-            steps{
-                withSonarQubeEnv(installationName: 'sonar'){
-                    //bat 'mvnw clean org.sonarsource.scanner.maven:sonar-maven-plugin:3.9.0.2155:sonar'
-                    bat(script: 'mvnw clean org.sonarsource.scanner.maven:sonar-maven-plugin:3.9.0.2155:sonar', returnStatus: true)
-                }
-            }
-        }
-    }
+  }
 }
