@@ -32,7 +32,6 @@ node {
                     // Install dependencies
                     sh 'pip install -r requirements.txt'
                 }
-            
         }
 
         stage('Run Selenium Tests') {
@@ -44,11 +43,11 @@ node {
                     } else {
                         bat 'venv\\Scripts\\activate'
                     }
-
                     // Run your Selenium tests
                     sh 'python -m pytest tests/' // Replace with your test command
                 
             }
+        }
         
 
   stage('Creating Test Report'){
