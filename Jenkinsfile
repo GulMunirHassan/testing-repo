@@ -18,7 +18,7 @@ node {
         dependencyCheckPublisher pattern: 'dependency-check-report.xml'
     }
  stage('Setup Virtual Environment') {
-            steps {
+            
                 // Using ShiningPanda plugin to create a virtual environment
                 sh 'python3 -m venv venv'
                 script {
@@ -32,11 +32,11 @@ node {
                     // Install dependencies
                     sh 'pip install -r requirements.txt'
                 }
-            }
+            
         }
 
         stage('Run Selenium Tests') {
-            steps {
+          
                 script {
                     // Activating virtual environment
                     if (isUnix()) {
@@ -47,9 +47,9 @@ node {
 
                     // Run your Selenium tests
                     sh 'python -m pytest tests/' // Replace with your test command
-                }
+                
             }
-        }
+        
 
   stage('Creating Test Report'){
     // If you're generating JUnit XML reports with pytest, you can archive them like this:
