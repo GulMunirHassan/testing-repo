@@ -1,0 +1,12 @@
+.nav .collapse.show {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  transition: none !important;
+}
+
+/* Optional: Add an indicator for expanded submenu */
+.nav .collapse.show + .nav-item > .nav-link::after {
+  transform: rotate(90deg);
+  /* You can adjust the styling of the indicator arrow here */
+}
