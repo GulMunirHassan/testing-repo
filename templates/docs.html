@@ -1,0 +1,407 @@
+
+
+{% extends "base.html" %}
+
+{% block content %}
+
+{% load static %}
+
+{% csrf_token %}
+
+
+
+<div class="main-panel">
+  <div class="content-wrapper">
+    
+    <div class="card">
+      <div class="card-body">
+
+
+
+
+
+
+
+
+
+
+        <div class="card">
+          <div class="card-body">
+            <h4 class="card-title">Recent Updated Files</h4>
+            <div class="table-container"  style="max-height: 100vh; overflow-y: auto;" >
+              <table class="table">
+                <thead class="thead-fixed">
+                  <tr>
+                    <th> File Name  </th>
+                    <th> Type Name </th>
+                    <th> Arabic </th>
+                    <th> TerminalID </th>
+                    <th> Download </th>
+                  </tr>
+                </thead>
+
+
+                
+             
+        
+                <tbody  class="tbody-scroll"  >
+
+                  {% for document in merchant_documents %}
+                  <tr>
+                    
+                    <td>
+                      {{ document.DocFileName }}
+                    </td>
+                    <td>{{ document.DocTypeName }}</td>
+                    <td>
+                      <label class="badge badge-gradient-success"> {{ document.DcoTypeNameArabic }} </label>
+                    </td>
+                    <td>{{ document.TerminalID }} </td>
+                    <td>  <a href="{{ document.DocFullPath }}" class="custom-link">
+                      <button class="custom-button mdi mdi-file-outline "> <span style="margin-left: 4%;"> Download </span> </button>
+                    </a> </td>
+                    
+                {% endfor %}
+                  </tr>
+                 
+                </tbody>
+
+              </table>
+            </div>
+
+            <div class="col-md-4" style="margin-top:10px;">
+              <button type="button" id="openPopUpButton" id='uploadFileButton' class="btn btn-gradient-primary btn-lg font-weight-medium auth-form-btn">Upload File</button>
+          </div>
+          
+           
+          </div>
+        </div>
+        
+ <!-- Example template code to display messages -->
+ 
+
+<!-- Your HTML structure -->
+<div id="successMessage" style="color: Blue;"> </div>
+
+
+      
+      
+        <div id="customPopUp" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5); z-index: 999;">
+          <div class="card-body" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 50%; max-height: 80%; overflow: auto; color: gray; background-color: white; padding: 20px; border-radius: 10px;">
+            <h4 class="card-title"> Upload File</h4>
+            <ul>
+              <li>
+                <div class="col-md-10">
+                  <button type="button" class="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" id="activityDropdown">Type of Document</button>
+                  <div class="dropdown-menu col-md-6" style="" aria-labelledby="activityDropdown" id="selectedActivityInput" ></div>
+                  <!-- Hidden input field to store selected activity -->
+                  <input type="hidden" name="selected_activity" id="selectedActivityInput" value="">
+                </div>
+              </li>
+              <li>
+                <div class="form-group">
+                  <label>File upload</label>
+                  <input type="file" id="fileInput" name="img[]" class="file-upload-default">
+                  <div class="input-group col-xs-12">
+                    <input type="text" class="form-control file-upload-info" id="fileName" disabled="" placeholder="Upload Image">
+                    <span class="input-group-append">
+                      <button class="file-upload-browse btn btn-gradient-primary" type="button" onclick="chooseFile()">File</button>
+                    </span>
+                  </div>
+                </div>
+              </li>
+              
+              <li><button class="btn btn-info btn-fw" id="update">Upload</button></li>
+              
+             
+            </ul>
+          </div>
+        </div>
+        
+
+
+    
+
+       
+        
+     
+<!-- Include your scripts -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+
+
+  $(document).ready(function() {
+    // Event listener for the upload button click
+    $('#update').on('click', function() {
+      // Hide the customPopUp div after 1 second
+      setTimeout(function() {
+        $('#customPopUp').hide();
+      }, 1000); // 1000 milliseconds = 1 second
+    });
+  });
+
+  $(document).ready(function() {
+    function fetchDocumentTypes() {
+      $.ajax({
+        url: '/fetch_document_types/',  // URL mapped to the Django view function
+        method: 'GET',
+        success: function(data) {
+          console.log('Fetched data:', data);
+          populateDropdown(data.result); // Pass the result array to populate the dropdown
+        },
+        error: function(xhr, status, error) {
+          console.error('Error:', error);
+        }
+      });
+    }
+    
+    function populateDropdown(data) {
+      var dropdownMenu = $('#activityDropdown').next('.dropdown-menu');
+      dropdownMenu.empty(); // Clear existing options
+
+      // Iterate through the fetched data and create dropdown items
+      data.forEach(function(item) {
+        var dropdownItem = $('<a>', {
+          'class': 'dropdown-item activity-dropdown-item',
+          'href': '#',
+          'data-key': item.DTypeID,
+          'data-value': item.DocTypeName,
+          'text': item.DocTypeName
+        });
+
+        dropdownMenu.append(dropdownItem);
+      });
+    }
+
+    // Function to open the custom pop-up
+    document.getElementById("openPopUpButton").addEventListener("click", function() {
+      document.getElementById("customPopUp").style.display = "block";
+      // Fetch document types when the pop-up is opened
+      fetchDocumentTypes();
+    });
+
+    // Event listener for selecting a document type
+    $(document).on('click', '.activity-dropdown-item', function() {
+      var selectedDocType = $(this).attr('data-key');
+      console.log('Selected Document Type:', selectedDocType);
+
+      // Send the selected document type to the backend
+      $.ajax({
+        url: '/upload_document/', // URL to the Django view handling the upload
+        method: 'POST',
+        data: {
+          'selectedDocType': selectedDocType  // Send the selected document type to the backend
+        },
+        success: function(response) {
+          console.log('Successfully sent Document Type to backend');
+          // Handle success response if needed
+        },
+        error: function(xhr, status, error) {
+          console.error('Error sending Document Type:', error);
+          // Handle error response if needed
+        }
+      });
+    });
+
+    // Event listener to close the custom pop-up when the close button is clicked
+    $('#closeCustomPopUp').on('click', function() {
+      $('#customPopUp').hide();
+    });
+  });
+
+
+
+
+  function chooseFile() {
+    document.getElementById('fileInput').click();
+  }
+  
+  // Event listener for file input change
+  document.getElementById('fileInput').addEventListener('change', function() {
+    var fileInput = document.getElementById('fileInput');
+    var fileName = document.getElementById('fileName');
+    
+    // Update file name in the text field
+    if (fileInput.files.length > 0) {
+      fileName.value = fileInput.files[0].name;
+    } else {
+      fileName.value = '';
+    }
+  });
+
+  $(document).on('click', '.activity-dropdown-item', function() {
+    var selectedDocType = $(this).attr('data-key');
+    console.log('Selected Document Type:', selectedDocType);
+
+    // Store the selected document type in a hidden input field for later use
+    $('#selectedActivityInput').val(selectedDocType);
+  });
+
+  // Function to handle file upload
+  function uploadFile(file) {
+    var formData = new FormData();
+    formData.append('selectedDocType', $('#selectedActivityInput').val()); // Retrieve selected document type
+    formData.append('img', file);
+
+    // Send file and document type ID to the backend
+    $.ajax({
+      url: '/upload_document/', // URL to the Django view handling the upload
+      method: 'POST',
+      data: formData,
+      processData: false,
+      contentType: false,
+      success: function(response) {
+        console.log('Successfully uploaded file');
+        // Handle success response if needed
+      },
+      error: function(xhr, status, error) {
+        console.error('Error uploading file and sending Document Type:', error);
+        // Handle error response if needed
+      }
+    });
+  }
+
+  // Event listener for file input change
+document.getElementById('fileInput').addEventListener('change', function() {
+    var fileInput = document.getElementById('fileInput');
+    var fileName = document.getElementById('fileName');
+
+    // Check if a file is selected
+    if (fileInput.files.length > 0) {
+      var file = fileInput.files[0];
+      uploadFile(file); // Call function to upload the file
+      fileName.value = file.name; // Update file name in the text field
+    }
+  });
+
+  // Event listener to close the custom pop-up when the close button is clicked
+  $('#closeCustomPopUp').on('click', function() {
+    $('#customPopUp').hide();
+  });
+
+
+function chooseFile() {
+  document.getElementById('fileInput').click();
+}
+  
+$(document).ready(function() {
+  // Function to retrieve the CSRF token from cookies
+  function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+      const cookies = document.cookie.split(';');
+      for (let i = 0; i < cookies.length; i++) {
+        const cookie = cookies[i].trim();
+        if (cookie.startsWith(name + '=')) {
+          cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+          break;
+        }
+      }
+    }
+    return cookieValue;
+  }
+
+  // Set up CSRF token for AJAX requests
+  $.ajaxSetup({
+    beforeSend: function(xhr, settings) {
+      if (!settings.crossDomain) {
+        const csrftoken = getCookie('csrftoken');
+        xhr.setRequestHeader('X-CSRFToken', csrftoken);
+      }
+    }
+  });
+
+  $('#update').on('click', function() {
+    // Perform the file upload on button click
+    var fileInput = document.getElementById('fileInput');
+    var formData = new FormData();
+    formData.append('img', fileInput.files[0]); // Retrieve the selected file
+
+    var selectedDocType = $('#selectedActivityInput').val(); // Retrieve selected document type
+    formData.append('selectedDocType', selectedDocType);
+
+    // Send file and document type ID to the backend
+    $.ajax({
+      url: '/upload/', // URL to the Django view handling the upload
+      method: 'POST',
+      data: formData,
+      processData: false,
+      contentType: false,
+      success: function(response) {
+        $('#successMessage').text('Successfully uploaded file ');
+        // Handle success response if needed
+      },
+      error: function(xhr, status, error) {
+        console.error('Error uploading file and sending Document Type:', error);
+        // Handle error response if needed
+      }
+    });
+  });
+
+  function handleSuccessAndClosePopUp(response) {
+    console.log('Server response:', response);
+    if (response.error_message) {
+      var errorMessageContainer = $('#errorMessage'); // Replace with your error message container ID
+      errorMessageContainer.html('<p style="color: blue;">' + response.error_message + '</p>');
+    } else {
+      // Handle other parts of the response as needed
+
+      // Close the custom pop-up after 1 second if it's a success
+      setTimeout(function() {
+        $('#customPopUp').hide();
+      }, 1000); // 1000 milliseconds = 1 second
+    }
+  }
+
+
+  function selectActivity(element) {
+    var selectedValue = element.getAttribute('data-value');
+    $('#selectedActivityInput').val(selectedValue); // Update hidden input value with the selected value
+    $('#activityDropdown').text(selectedValue); // Optionally update the dropdown button text
+
+    // Optionally close the dropdown menu after selecting an activity (if needed)
+    $('#activityDropdown').next('.dropdown-menu').removeClass('show');
+}
+
+
+});
+
+
+</script>
+
+
+
+          
+    
+       
+      </div>
+    </div>
+    </div>
+  </div>
+   
+
+
+
+
+
+
+
+
+
+
+
+
+
+      
+
+
+
+ <!-- Add more Sider ended -->
+
+
+
+              
+          <!-- content-wrapper ends -->
+          <!-- partial:partials/_footer.html -->
+{% endblock %}
+   

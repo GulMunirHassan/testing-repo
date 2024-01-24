@@ -1,0 +1,18 @@
+
+{% block content %}
+
+
+
+
+   
+<a href={% url "paymentsummary" %} class="custom-link" style="text-decoration: none;">
+<button type="button" class="custom-button {% if request.path == '/paymentsummary/' %}active-button{% endif %}"  style="display: inline; width:20%" >Payment Summary</button></a>
+<a href={% url "duesummary" %} class="custom-link" style="text-decoration: none;">
+<button type="button"  class="custom-button {% if request.path == '/duesummary/' %}active-button{% endif %}"  style="display: inline; width:20%">Due Summary</button></a>
+<a href={% url "duetransaction" %} class="custom-link" style="text-decoration: none;">
+<button type="button"  class="custom-button {% if request.path == '/duetransaction/' %}active-button{% endif %}" style="display: inline; width:20%">Due Transaction </button></a>
+<a href={% url "dueadjustment" %} class="custom-link" style="text-decoration: none;">
+<button type="button"  class="custom-button {% if request.path == '/dueadjustment/' %}active-button{% endif %}"  style="display: inline; width:20%">Due Adjustment</button></a>
+
+
+{% endblock %}

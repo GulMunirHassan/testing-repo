@@ -1,0 +1,139 @@
+
+
+{% extends "base.html" %}
+
+{% block content %}
+
+{% load static %}
+
+      
+
+<div class="main-panel">
+  <div class="content-wrapper">
+    
+    <div class="card">
+      <div class="card-body">
+       
+
+        {% include "payment_button.html" %}
+        <br>
+        <br>
+
+        <h4 class="card-title" >Transaction <span style="color:pink "> Due </span></h4>
+        <div class="table-container" style="max-height:410px">
+            <table class="table" >
+                <thead>
+                    <tr>
+                        <th>Adjustment Category</th>
+                        <th>Adjustment Amount</th>
+                        <th>Adjustment Details</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for payment_info in merchant_data.result.DUE_ADJUSTMENT_DETAILS %}
+                        <tr>
+                            <td>{{ payment_info.Adjustment_Category }}</td>
+                            <td>{{ payment_info.Adjustment_Amount }}</td>
+                            
+                            <td>
+                                <button type="button" class="btn btn-gradient-info btn-rounded btn-fw"  style="background-image: linear-gradient(to right, #f1f1f1 , #22DB5498); color:#310D7D;" onclick="showPaymentDetails(
+                                    '{{ payment_info.Adjustment_Category}}',
+                                    '{{ payment_info.Adjustment_Amount }}',
+                                    '{{ payment_info.Terminal_ID}}',
+                                    '{{ payment_info.Remarks }}',
+                                    '{{ payment_info.Linked_Payment_Ref}}',
+                                    '{{ payment_info.Due_Date }}',
+                                    '{{ payment_info.Applied_Date }}',
+                      
+                                    
+                                )">Adjustement Details</button>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+   
+
+  
+        <div id="paymentModal" class="card" style="display: none; margin-top:2%; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5); z-index: 999;">
+          <div class="card-body" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 50%; max-height: 80%; overflow: auto; color: gray; background-color: white; padding: 20px; border-radius: 10px;">
+              <h4 class="card-title">Due Transaction</h4>
+              <ul>
+                  <li><p id="Transaction_Amount"></p></li>
+                  <li><p id="Transaction_Date"></p></li>
+                  <li><p id="Terminal_ID"></p></li>
+                  <li><p id="Approval_Code"></p></li>
+                  <li><p id="Card"></p></li>
+                  <li><p id="Applied_Fees"></p></li>
+                  <li><p id="vat"></p></li>
+   
+         
+                  <!-- Add other list items here -->
+                  <li><button class="btn btn-info btn-fw" id="closeBtn" onclick="closePaymentModal()">Close</button></li>
+              </ul>
+          </div>
+      </div>
+                
+
+ 
+        
+        <script>
+            // JavaScript functions to show/hide modal
+            function showPaymentDetails(
+              Adjustment_Category, Adjustment_Amount, Terminal_ID, Remarks, Linked_Payment_Ref, Due_Date, Applied_Date
+            ) {
+                document.getElementById("Transaction_Amount").innerHTML = "Adjustment_Category : " +  Adjustment_Category;
+                document.getElementById("Transaction_Date").innerHTML = "Adjustment_Amount : " + Adjustment_Amount;
+                document.getElementById("Terminal_ID").innerHTML = "Terminal_ID : " + Terminal_ID;
+                document.getElementById("Approval_Code").innerHTML = " Remarks : " + Remarks;
+                document.getElementById("Card").innerHTML = "Card: " + Card;
+                document.getElementById("Applied_Fees").innerHTML = "Linked_Payment_Ref : " + Linked_Payment_Ref;
+                document.getElementById("vat").innerHTML = "Due_Date : " + Due_Date ;
+
+
+
+                document.getElementById("paymentModal").style.display = "block";
+            }
+        
+            function closePaymentModal() {
+                document.getElementById("paymentModal").style.display = "none";
+            }
+            
+  
+          document.getElementById("paymentModal").addEventListener("click", function() {
+              var myDiv = document.getElementById("myDiv");
+              myDiv.style.display = "block";
+              setTimeout(function() {
+                  myDiv.style.opacity = "1";
+              }, 10);
+          });
+      
+          document.getElementById("closeBtn").addEventListener("click", function() {
+              var myDiv = document.getElementById("myDiv");
+              myDiv.style.opacity = "0";
+              setTimeout(function() {
+                  myDiv.style.display = "none";
+              }, 300);
+          });
+      </script>
+   
+       
+      </div>
+    </div>
+    </div>
+  </div>
+   
+    
+    
+
+
+ <!-- Add more Sider ended -->
+
+
+
+              
+          <!-- content-wrapper ends -->
+          <!-- partial:partials/_footer.html -->
+{% endblock %}
+   

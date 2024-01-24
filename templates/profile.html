@@ -1,0 +1,212 @@
+
+
+{% extends "base.html" %}
+
+{% block content %}
+
+{% load static %}
+
+{% csrf_token %}
+
+
+
+<div class="main-panel">
+    <div class="content-wrapper">
+      <div class="page-header">
+        <h3 class="page-title">
+          <span class="page-title-icon bg-gradient-primary text-white me-2">
+            <i class="mdi mdi-account"></i>
+          </span> Profile
+        </h3>
+        <nav aria-label="breadcrumb">
+          <ul class="breadcrumb">
+            <li class="breadcrumb-item active" aria-current="page">
+              <span></span>Account Details <i class="mdi mdi-alert-circle-outline icon-sm text-primary align-middle"></i>
+            </li>
+          </ul>
+        </nav>
+      </div>
+
+
+      <div class="row">
+
+      <div class="col-md-3 grid-margin stretch-card">
+        <div class="card">
+          <div class="card-body" style="display: inline; align: center;" >
+            
+            <div class="nav-profile-img" style="display: inline; margin-left: 20%;">
+              <img src="/static/assets/images/faces/face1.jpg" alt="profile" class="rounded-profile-pic" style="margin-bottom: 10%;">
+              <h4 style="display: inline; margin-left: 12%;">{{ user_data.Username }}</h4>
+              <p style="display: inline; color: #4211b6; margin-left: 12%; margin-bottom: 15%;">Merchant</p>
+          
+              <ul style="list-style: none; padding: 0;">
+                <li style="margin-bottom: 15px;">
+                    <h6 class="mdi mdi-cash-multiple" style="color: #4211A6; font-weight: bold; margin-bottom: 5px;"> SAR: <span style="color: black;"> {{ user_data.Username }} </span></h6>
+                </li>
+                <li style="margin-bottom: 15px;">
+                    <h3 class="mdi mdi-account-convert icon-sm text-success" style="margin-bottom: 5px;">
+                        <span style="font-family: Arial, sans-serif; font-size: 14px; font-weight: bold; color: #333;">Validations</span>
+                    </h3>
+                </li>
+
+                {% if isCRNumber_MerchantAddress_Verified %}
+                <li style="margin-bottom: 15px;">
+                    <h4 class="mdi mdi-check-all icon-sm text-success" style="margin-bottom: 5px;">
+                        <span style="font-family: Arial, sans-serif; font-size: 12px; font-weight: bold; color: #333;"> National Address</span>
+                    </h4>
+                </li>
+
+            {% else %}
+                <li style="margin-bottom: 15px;">
+                    <h4 class="mdi mdi-close-circle-outline icon-sm text-danger" style="margin-bottom: 5px;">
+                        <span style="font-family: Arial, sans-serif; font-size: 12px; font-weight: bold; color: #333;"> National Address</span>
+                    </h4>
+                </li>
+            {% endif %}
+            
+
+
+                {% if id %}
+                <li style="margin-bottom: 15px;">
+                  <h4 class="mdi mdi-check-all icon-sm text-success" style="margin-bottom: 5px;">
+                      <span style="font-family: Arial, sans-serif; font-size: 12px; font-weight: bold; color: #333;">National ID / Iqama </span>
+                  </h4>
+              </li>
+                    
+                  {% else %}
+                  <li style="margin-bottom: 15px;">
+                    <h4 class="mdi mdi-close-circle-outline icon-sm text-danger" style="margin-bottom: 5px;">
+                        <span style="font-family: Arial, sans-serif; font-size: 12px; font-weight: bold; color: #333;">National ID</span>
+                    </h4>
+                </li>
+                  {% endif %}
+
+
+
+        
+
+           
+
+
+              {% if cr %}
+                <li>
+                    <h4 class="mdi mdi-check-all icon-sm text-success">
+                        <span style="font-family: Arial, sans-serif; font-size: 12px; font-weight: bold; color: #333;">CR Number</span>
+                    </h4>
+                </li>
+              {% else %}
+              <li>
+                <h4 class="mdi mdi-close-circle-outline icon-sm text-danger">
+                    <span style="font-family: Arial, sans-serif; font-size: 12px; font-weight: bold; color: #333;">CR Number</span>
+                </h4>
+            </li>
+            {% endif %}
+
+
+            {% comment %} {% if mob %}
+            <li>
+                <h4 class="mdi mdi-check-all icon-sm text-success">
+                    <span style="font-family: Arial, sans-serif; font-size: 12px; font-weight: bold; color: #333;">Mobile Number</span>
+                </h4>
+            </li>
+          {% else %}
+          <li>
+            <h4 class="mdi mdi-close-circle-outline icon-sm text-danger">
+                <span style="font-family: Arial, sans-serif; font-size: 12px; font-weight: bold; color: #333;">Mobile Number</span>
+            </h4>
+        </li>
+        {% endif %} {% endcomment %}
+
+
+            </ul>
+     
+          
+
+              
+          
+            </div>
+          
+          </div>
+        </div>
+      </div>
+
+
+
+
+<div class="col-md-8 d-flex align-items-stretch">
+  <div class="row">
+    <div class="col-md-12 grid-margin stretch-card">
+      <div class="card">
+        <div class="card-body" style="font-size: 14px;"> <!-- Adjust font size if needed -->
+          
+          <h6 class="mdi mdi-drag inline-profile">
+              <span style="margin-right: 2%; color:#4211A6;"> CR Number: </span> {{ user_data.CR_Number }}
+          </h6>
+          <h6 class="mdi mdi-cellphone-basic inline-profile">
+              <span style="margin-right: 2%; color:#4211A6;"> Mobile No: </span> {{ user_data.MobileNumber }}
+          </h6>
+          <h6 class="mdi mdi-map-marker-radius inline-profile">
+              <span style="margin-right: 2%; color:#4211A6;"> Address: </span> Empty
+          </h6>
+      </div>
+      
+      </div>
+    </div>
+    <div class="col-md-12 grid-margin stretch-card">
+      <div class="card">
+        <div class="card-body">
+            <div class="col-md-12 grid-margin stretch-card">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6 mb-2">
+                              <a href="https://auth.namipay.com.sa/" class="custom-link" style="text-decoration: none;">
+                                <button  class=" custom-button mdi mdi-check-all "> <span style="margin-left: 4%; "> Validate CR </span></button>
+                            </a>
+                              
+                            <br>
+
+                              <a href="/validateform/" class="custom-link" style="text-decoration: none;">
+                                <button  class=" custom-button mdi mdi-check-all "> <span style="margin-left: 4%; "> Validate ID / Mobile Number </span></button>
+                            </a>
+                            
+                           
+                          <br>
+                          <a href="{% url 'doc' %}" class="custom-link" style="text-decoration: none;">
+                            <button class="custom-button mdi mdi-file-outline "> <span style="margin-left: 4%;"> See All Agreements </span> </button>
+                          </a>
+                            </div>
+                           
+                          
+                            <div class="col-md-6 mb-2">
+                                <button class="custom-button mdi mdi-share-outline "> <span style="margin-left: 4%;">  $refer_buddy </span>  </button>
+                                  <br>
+                                  <br>
+                                  <button class="custom-button  mdi mdi-account-remove-outline"> <span style="margin-left: 4%;">   Terminate Account </button>
+                      
+                              </div>
+                           
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+
+
+
+
+
+
+              
+          <!-- content-wrapper ends -->
+          <!-- partial:partials/_footer.html -->
+{% endblock %}
+   

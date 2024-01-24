@@ -1,0 +1,272 @@
+{% extends "base.html" %}
+{% block content %}
+{% load static %}
+{% csrf_token %}
+<div class="main-panel">
+  <div class="content-wrapper">
+    <div class="card" style="padding-bottom:5%;    margin:2%">
+      <div class="card-body">
+        <h2  style="padding-bottom:2%; padding-left:0%;   " >Complain Ticket</h2>
+        
+ <form action="{% url 'complainticket' %}" method="post">
+          {% csrf_token %}
+        
+          <div class="row"  style = "padding-left:10%; padding-bottom:2%;" >
+            <label>Select Activity</label>
+            <div class="col-md-10">     
+                <button type="button" class="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" id="activityDropdown">Select Activity</button>
+                <div class="dropdown-menu col-md-6" style="" aria-labelledby="activityDropdown">
+                    {% for activity in activities %}
+                        <a class="dropdown-item activity-dropdown-item" href="#" data-key="{{ activity.key }}" data-value="{{ activity.value }}">{{ activity.value }}</a>
+                    {% endfor %}
+                </div>
+                <!-- Hidden input field to store selected activity -->
+                <input type="hidden" name="selected_activity" id="selectedActivityInput" value="">
+    
+            </div>
+        </div>
+      
+
+        <div class="row" style = "padding-left:10%; padding-bottom:2%;">
+          <label for="faultCategoryDropdown">Select Fault Category</label>
+          <div class="col-md-6">     
+              <button type="button" class="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" id="faultCategoryDropdown">Select Fault Category</button>
+              <div class="dropdown-menu" style="" aria-labelledby="faultCategoryDropdown">
+                  <!-- Dynamically populated fault categories will be inserted here -->
+              </div>
+              <input type="hidden" name="selected_fault_category_key" id="selectedFaultCategoryKeyInput" value="">
+              <input type="hidden" name="selected_fault_category_value" id="selectedFaultCategoryValueInput" value="">
+           
+          </div>
+      </div>
+
+
+
+        
+
+
+
+        <div class="row" style="width:60%;padding-left:10%; padding-bottom:2%;" >
+          <label>Terminal ID</label>
+          <div class="col-md-6">     
+          
+            <input type="text" class="form-control" placeholder="Terminal ID" name="terminal_id" aria-label="Contact" >
+  
+            </div>
+            
+          </div>
+        </div>
+
+        <div class="row" style = "padding-left:10%;">
+          <div >
+              <!-- Submit button -->
+              <button id="submitButton" class=" btn-gradient-primary btn-lg font-weight-medium " style="width:16%; margin-left:22px; ">Submit</button>
+          </div>
+      </div>
+    
+
+      </form>
+      
+      <div id="responseContent">
+        <!-- Display API response here -->
+    </div>
+
+        <!-- Your hidden input field to store selected key -->
+        <div style="display: none;" >
+        <input type="hidden" name="csrfmiddlewaretoken" value="{% csrf_token %}" id="selectedKeyInput">
+        </div>
+    </div>
+  </div>
+</div>
+
+
+
+<script>
+  document.getElementById("submitButton").addEventListener("click", function() {
+      var form = document.getElementById("myForm");
+      var formData = new FormData(form);
+
+      // Make an AJAX request to your Django backend
+      var xhr = new XMLHttpRequest();
+      xhr.open("POST", "/create_ticket/", true);
+      xhr.onreadystatechange = function() {
+          if (xhr.readyState === XMLHttpRequest.DONE) {
+              if (xhr.status === 200) {
+                  var responseData = JSON.parse(xhr.responseText);
+                  // Extract the error message from the received JSON response
+                  var errorMessage = responseData.error_message;
+                  // Update the content of the responseContent div with the extracted error message
+                  document.getElementById("responseContent").innerHTML = errorMessage;
+              } else {
+                  // Handle error cases if needed
+                  console.error("Request failed with status:", xhr.status);
+              }
+          }
+      };
+
+      // Set the CSRF token in the request header
+      var csrftoken = form.querySelector('[name=csrfmiddlewaretoken]').value;
+      xhr.setRequestHeader("X-CSRFToken", csrftoken);
+
+      // Send the form data in the request
+      xhr.send(formData);
+  });
+</script>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+
+  
+
+
+
+
+
+  $(document).ready(function() {
+    var csrftoken = $('[name=csrfmiddlewaretoken]').val();
+
+    function fetchFaultCategories(selectedKey) {
+      $.ajax({
+        url: '/fetch_fault_categories/',
+        method: 'POST',
+        headers: {
+          'X-CSRFToken': csrftoken
+        },
+        data: { selectedKey: selectedKey },
+        success: function(response) {
+          var faultCategoryDropdown = $('#faultCategoryDropdown').next('.dropdown-menu');
+          faultCategoryDropdown.empty();
+
+          if (response.fault_categories && response.fault_categories.length > 0) {
+            response.fault_categories.forEach(function(category) {
+              faultCategoryDropdown.append('<a class="dropdown-item" href="#" data-key="' + category.key + '" data-value="' + category.value + '" onclick="selectFaultCategory(this)">' + category.value + '</a>');
+            });
+          } else {
+            faultCategoryDropdown.append('<a class="dropdown-item disabled">No categories available</a>');
+          }
+        },
+        error: function(xhr, status, error) {
+          console.error('Error fetching fault categories:', error);
+        }
+      });
+    }
+
+    function fetchSubActivity(selectedKey) {
+      $.ajax({
+          url: '/fetch_fault_categories/', // Update the correct URL for fetching sub-activity data
+          method: 'POST',
+          headers: {
+              'X-CSRFToken': csrftoken
+          },
+          data: { selectedKey: selectedKey },
+          success: function(response) {
+              var subActivityDropdown = $('#subActivityDropdown').next('.dropdown-menu');
+              subActivityDropdown.empty();
+  
+              if (response.sub_activity_data && response.sub_activity_data.length > 0) {
+                  response.sub_activity_data.forEach(function(subActivity) {
+                      subActivityDropdown.append('<a class="dropdown-item" href="#" data-key="' + subActivity.key + '" data-value="' + subActivity.value + '" onclick="selectSubActivity(this)">' + subActivity.value + '</a>');
+                  });
+              } else {
+                  subActivityDropdown.append('<a class="dropdown-item disabled">No sub-activities available</a>');
+              }
+          },
+          error: function(xhr, status, error) {
+              console.error('Error fetching sub-activities:', error);
+          }
+      });
+  }
+  
+    $('.activity-dropdown-item').click(function() {
+      var selectedKey = $(this).data('key');
+      var selectedValue = $(this).data('value');
+
+      $('#selectedKeyInput').val(selectedKey);
+      fetchSubActivity(selectedKey);
+      fetchFaultCategories(selectedKey);
+
+      console.log('Selected Activity Value:', selectedValue);
+    });
+
+    $(document).on('click', '.activity-dropdown-item', function() {
+      var selectedKey = $(this).data('key');
+      var selectedValue = $(this).data('value');
+
+      $('#selectedKeyInput').val(selectedKey);
+      fetchFaultCategories(selectedKey);
+
+      console.log('Selected Activity Value:', selectedValue);
+    });
+
+
+
+
+    function selectFaultCategory(element) {
+      var selectedValue = $(element).data('value');
+      console.log('Selected Fault Category Value:', selectedValue);
+    }
+  });
+
+
+
+
+
+  function selectFaultCategory(element) {
+    var selectedKey = element.getAttribute('data-key');
+    var selectedValue = element.getAttribute('data-value');
+    
+    // Update hidden input values for key and value
+    $('#selectedFaultCategoryKeyInput').val(selectedKey);
+    $('#selectedFaultCategoryValueInput').val(selectedValue);
+
+    // Optionally update the dropdown button text or perform other actions
+    $('#faultCategoryDropdown').text(selectedValue);
+
+    // Optionally close the dropdown menu after selecting a category (if needed)
+    $('#faultCategoryDropdown').next('.dropdown-menu').removeClass('show');
+
+    // Perform AJAX request or any other necessary actions
+    // ...
+}
+
+
+
+function selectSubActivity(element) {
+  var selectedValue = element.getAttribute('data-value');
+  $('#selectedSubCategoryInput').val(selectedValue); // Update hidden input value with the selected value
+  $('#subActivityDropdown').text(selectedValue); // Optionally update the dropdown button text
+
+  // Optionally close the dropdown menu after selecting a category (if needed)
+  $('#subActivityDropdown').next('.dropdown-menu').removeClass('show');
+}
+
+
+
+
+function selectRegion(element) {
+  var selectedValue = $(element).data('value');
+  $('#selectedRegionInput').val(selectedValue); // Update hidden input value with the selected value
+  $('#regionDropdown').text(selectedValue); // Optionally update the dropdown button text
+
+  // Optionally close the dropdown menu after selecting a region (if needed)
+  $('#regionDropdown').next('.dropdown-menu').removeClass('show');
+}
+
+
+
+function selectVendor(element) {
+  var selectedValue = $(element).data('value');
+  $('#selectedVendorInput').val(selectedValue); // Update hidden input value with the selected value
+  $('#vendorDropdown').text(selectedValue); // Optionally update the dropdown button text
+
+  // Optionally close the dropdown menu after selecting a vendor (if needed)
+  $('#vendorDropdown').next('.dropdown-menu').removeClass('show');
+}
+
+
+
+
+</script>
+
+
+{% endblock %}

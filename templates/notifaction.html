@@ -1,0 +1,51 @@
+
+{% extends "base.html" %}
+
+{% block notifications_js %}
+
+
+{% endblock %}
+
+      
+
+
+
+
+{% block content %}
+
+
+<div class="main-panel">
+    <div class="content-wrapper">
+
+
+
+  
+        <div class="card-body">
+            <h4 class="card-title">Search Result <span style="color:pink"> Transactions </span></h4>
+            <div class="table-container" style="max-height: 100vh; overflow-y: auto;">
+                <table class="table">
+                    <thead  class="thead-fixed" >
+                        <tr>
+                            <th>Terminal_ID</th>
+                            
+                        </tr>
+                    </thead>
+                    <tbody  class="tbody-scroll" >
+                        {% for dues_summary_info in merchant_documents %}
+                            <tr>
+                                <td>{{ dues_summary_info.Terminal_ID }}</td>
+                                
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+    </div>
+</div>
+
+
+
+    <!-- Content for the notification page -->
+    <!-- ... -->
+{% endblock %}

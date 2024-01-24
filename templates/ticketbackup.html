@@ -1,0 +1,124 @@
+
+
+{% extends "base.html" %}
+
+{% block content %}
+
+{% load static %}
+
+      
+
+<div class="main-panel">
+  <div class="content-wrapper">
+    
+    <div class="card">
+      <div class="card-body">
+       
+
+    
+        {% csrf_token %}
+        <br>
+        <br>
+        
+        {% if error_message %}
+        <p style="color: Blue;">{{ error_message }}</p>
+        {% endif %}
+        <div class="search-container" style="margin-bottom: 20px;">
+            <input type="text" id="searchInput" placeholder="Search...">
+            <button onclick="searchTable()">Search</button>
+        </div>
+        
+        <h4 class="card-title">Tickets <span style="color:pink"> Information </span></h4>
+        <div class="table-container" style="max-height: 70vh; overflow-y: auto;">
+            <table class="table" id="dataTable">
+                <thead class="thead-fixed" >
+                    <tr>
+                        <th>Activity</th>
+                        <th>Fault</th>
+                        <th>Terminal  ID</th>
+                        <th>Description</th>
+                        <th>Status</th>
+                        <th>Details</th> 
+                 
+                    </tr>
+                </thead>
+                <tbody class="tbody-scroll" >
+                    {% for dues_summary_info in merchant_data.tickets %}
+                        <tr>
+                            <td>{{ dues_summary_info.activity}}</td>
+                            <td>{{ dues_summary_info.fault }}</td>
+                            <td>{{ dues_summary_info.terminalID }}</td>
+                            <td>{{ dues_summary_info.description }}</td>
+                            <td>{{ dues_summary_info.status }}</td>
+                            <td>
+                                <!-- Details button for each ticket -->
+                                <button type="button" class="btn btn-sm btn-info"
+                                        onclick="showTicketDetails('{{ ticket_info.id }}')">
+                                    Details
+                                </button>
+                            </td>
+                          
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+           
+        </div>
+        
+        <div class="row">
+          <div class="col-md-3" style="margin-top:30px;">
+              <a href="{% url 'createticket' %}" class="custom-link">
+                  <button type="submit" class="btn btn-block btn-gradient-primary btn-lg font-weight-medium auth-form-btn">Create New Ticket</button>
+              </a>
+          </div>
+          <div class="col-md-3" style="margin-top:30px;">
+              <a href="{% url 'complainticket' %}" class="custom-link">
+                  <button type="submit" class="btn btn-block btn-gradient-primary btn-lg font-weight-medium auth-form-btn">Complain Ticket</button>
+              </a>
+          </div>
+      </div>
+          </div>
+       
+      </div>
+    </div>
+    </div>
+  </div>
+   
+    
+    
+  <script>
+    function searchTable() {
+        var input, filter, table, tr, td, i, txtValue;
+        input = document.getElementById("searchInput");
+        filter = input.value.toUpperCase();
+        table = document.getElementById("dataTable");
+        tr = table.getElementsByTagName("tr");
+      
+        for (i = 0; i < tr.length; i++) {
+            td = tr[i].getElementsByTagName("td");
+            for (var j = 0; j < td.length; j++) {
+                cell = tr[i].getElementsByTagName("td")[j];
+                if (cell) {
+                    txtValue = cell.textContent || cell.innerText;
+                    if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                        tr[i].style.display = "";
+                        break;
+                    } else {
+                        tr[i].style.display = "none";
+                    }
+                }
+            }
+        }
+    }
+</script>
+
+
+ <!-- Add more Sider ended -->
+
+
+
+              
+          <!-- content-wrapper ends -->
+          <!-- partial:partials/_footer.html -->
+{% endblock %}
+   

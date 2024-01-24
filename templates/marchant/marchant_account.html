@@ -1,0 +1,69 @@
+
+
+{% extends "base.html" %}
+
+{% block content %}
+
+{% load static %}
+
+      
+
+<div class="main-panel">
+  <div class="content-wrapper">
+    
+    <div class="card">
+      <div class="card-body">
+       
+
+        {% include "merchant_button.html" %}
+        <br>
+        <br>
+
+        <h4 class="card-title">Bank Account <span style="color:pink"> Information </span></h4>
+        <div class="table-container">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Beneficiary Bank</th>
+                        <th>Account Number</th>
+                        <th>Account IBAN</th>
+                        <th>Beneficiary Name</th>
+                        <th>Beneficiary Address</th>
+                        <th>Account Type</th>
+                        <th>Daily Transfer Enabled</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for bank_info in merchant_data.result.BANKACCOUNT_INFO %}
+                        <tr>
+                            <td>{{ bank_info.Benefeciary_Bank }}</td>
+                            <td>{{ bank_info.Account_Number }}</td>
+                            <td>{{ bank_info.Account_IBAN }}</td>
+                            <td>{{ bank_info.Benefeciary_Name }}</td>
+                            <td>{{ bank_info.Benefeciary_Address }}</td>
+                            <td>{{ bank_info.Account_Type }}</td>
+                            <td>{{ bank_info.Daily_Transfer_Enabled }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+       
+      </div>
+    </div>
+    </div>
+  </div>
+   
+    
+    
+
+
+ <!-- Add more Sider ended -->
+
+
+
+              
+          <!-- content-wrapper ends -->
+          <!-- partial:partials/_footer.html -->
+{% endblock %}
+   

@@ -1,0 +1,67 @@
+
+
+{% extends "base.html" %}
+
+{% block content %}
+
+{% load static %}
+
+      
+
+<div class="main-panel">
+  <div class="content-wrapper">
+    
+    <div class="card">
+      <div class="card-body">
+       
+
+        {% include "merchant_button.html" %}
+        {% csrf_token %}
+        <br>
+        <br>
+        
+   
+        
+<h4 class="card-title">Branch <span style="color:pink"> Information </span></h4>
+<div class="table-container">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Branch Name</th>
+                <th>Branch Address</th>
+                <th>City</th>
+                <th>License Number</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for branch_info in merchant_data.result.BRANCH_INFO %}
+                <tr>
+                    <td>{{ branch_info.Branch_Name }}</td>
+                    <td>{{ branch_info.Branch_Address }}</td>
+                    <td>{{ branch_info.City }}</td>
+                    <td>{{ branch_info.License_Number }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+        
+       
+      </div>
+    </div>
+    </div>
+  </div>
+   
+    
+    
+
+
+ <!-- Add more Sider ended -->
+
+
+
+              
+          <!-- content-wrapper ends -->
+          <!-- partial:partials/_footer.html -->
+{% endblock %}
+   

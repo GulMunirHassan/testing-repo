@@ -1,0 +1,166 @@
+
+
+{% extends "base.html" %}
+
+{% block content %}
+
+{% load static %}
+
+  {% csrf_token %}
+
+ 
+
+
+
+
+<div class="main-panel">
+  <div class="content-wrapper">
+    <div class="page-header">
+      <h3 class="page-title">
+        <span class="page-title-icon bg-gradient-primary text-white me-2">
+          <i class="mdi mdi-home"></i>
+        </span> Dashboard
+      </h3>
+      <nav aria-label="breadcrumb">
+        <ul class="breadcrumb">
+          <li class="breadcrumb-item active" aria-current="page">
+            <span></span>Overview <i class="mdi mdi-alert-circle-outline icon-sm text-primary align-middle"></i>
+          </li>
+        </ul>
+      </nav>
+    </div>
+
+    <div class="row">
+      <div class="col-md-4 stretch-card grid-margin">
+        <div class="card bg-gradient-danger card-img-holder text-white">
+          <div class="card-body">
+            <img src=" {% static "assets/images/dashboard/circle.svg" %}" class="card-img-absolute" alt="circle-image">
+            <h4 class="font-weight-normal mb-3">Current Balance SAR <i class="mdi mdi-chart-line mdi-24px float-right"></i>
+            </h4>
+            {% if net_due_amount %}
+            <h2 class="mb-5"> {{ net_due_amount }} </h2>
+            {% endif %}
+            <h6 class="card-text">Payment Summary</h6>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 stretch-card grid-margin">
+        <div class="card bg-gradient-info card-img-holder text-white">
+          <div class="card-body">
+            <img src=" {% static "assets/images/dashboard/circle.svg" %}"  class="card-img-absolute" alt="circle-image">
+            <h4 class="font-weight-normal mb-3">Dues SAR <i class="mdi mdi-bookmark-outline mdi-24px float-right"></i>
+            </h4>
+            {% if Due_Tx_Amount %}
+            <h2 class="mb-5"> {{ Due_Tx_Amount }} </h2>
+            {% endif %}
+       
+
+            {% if Due_Tx %}
+            <h6 class="card-text"> {{ Due_Tx }} Transaction Dues </h6>
+            {% endif %}
+     
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 stretch-card grid-margin">
+        <div class="card bg-gradient-success card-img-holder text-white">
+          <div class="card-body">
+            <img src=" {% static "assets/images/dashboard/circle.svg" %}"  class="card-img-absolute" alt="circle-image">
+            <h4 class="font-weight-normal mb-3">Due Adjustment  SAR <i class="mdi mdi-diamond mdi-24px float-right"></i>
+            </h4>
+
+            {% if Due_Adjustment_Amount %}
+            <h2 class="mb-5">  {{ Due_Adjustment_Amount }} </h2>
+            {% endif %}
+       
+            {% if Due_Fees %}
+            <h6 class="card-text"> {{ Due_Fees }} Due Fees </h6>
+          
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+   
+    {% endif %}
+<div class="row">
+      <div class="col-md-7 grid-margin stretch-card">
+        <div class="card">
+          <div class="card-body">
+            <h4 class="card-title">Due Transaction</h4>
+            <div class="table-container">
+              <table class="table">
+                <thead class="thead-fixed" >
+                  <tr>
+                    <th> SAR </th>
+                    <th>  Transaction Date </th>
+                    <th> Reference Number </th>
+                  </tr>
+                </thead>
+                <tbody  class="tbody-scroll" >
+                {% for payment_info in due_transaction.result.DUE_TRANSACTION_DETAILS|slice:":10" %}
+                <tr>
+                    <td>{{ payment_info.Transaction_Amount }}</td>
+                    <td>{{ payment_info.Transaction_Date }}</td>
+                    <td>{{ payment_info.Transaction_Reference_Number }}</td>
+                </tr>
+                    {% endfor %}
+              </thead>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-5 grid-margin stretch-card">
+        <div class="card">
+          <div class="card-body"><div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div>
+            <h4 class="card-title">Traffic Sources</h4>
+            <canvas id="traffic-chart" width="205" height="102" style="display: block; width: 205px; height: 102px;" class="chartjs-render-monitor"></canvas>
+            <div id="traffic-chart-legend" class="rounded-legend legend-vertical legend-bottom-left pt-4"><ul><li><span class="legend-dots" style="background:linear-gradient(to right, rgba(54, 215, 232, 1), rgba(177, 148, 250, 1))"></span>Search Engines<span class="float-right">70%</span></li><li><span class="legend-dots" style="background:linear-gradient(to right, rgba(6, 185, 157, 1), rgba(132, 217, 210, 1))"></span>Direct Click<span class="float-right">20%</span></li><li><span class="legend-dots" style="background:linear-gradient(to right, rgba(255, 191, 150, 1), rgba(254, 112, 150, 1))"></span>Bookmarks Click<span class="float-right">10%</span></li></ul></div>
+          </div>
+        </div>
+      </div>
+     
+</div>
+
+
+<canvas id="visit-sale-chart" class="mt-4" style="display: none;"></canvas>
+
+
+
+
+      {% if netduepr %}
+      <p id="display-message"></p>
+      <script>
+        var netduepr = {{netduepr|default_if_none:0 }};  // Assuming Due_Fees holds a numeric value
+        displayMessage(netduepr);
+      </script>
+      {% endif %}
+
+      {% if trduepr %}
+      <p id="display-message1"></p>
+      <script>
+        var trduepr = {{ trduepr|default_if_none:0 }};  // Assuming Due_Fees holds a numeric value
+        displayMessage1(trduepr);
+      </script>
+ {% endif %}
+
+ {% if adjduepr %}
+      <p id="display-message2"></p>
+      <script>
+        var adjduepr = {{ adjduepr|default_if_none:0 }};  // Assuming Due_Fees holds a numeric value
+        displayMessage2(adjduepr);
+      </script>
+      {% endif %}
+
+
+
+
+              
+         
+          <!-- partial:partials/_footer.html -->
+{% endblock %}
+   

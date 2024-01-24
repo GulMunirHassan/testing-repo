@@ -1,0 +1,436 @@
+
+{% extends "base.html" %}
+
+{% block content %}
+
+{% load static %}
+
+      
+
+<div class="main-panel">
+  <div class="content-wrapper">
+    
+    <div class="card">
+      <div class="card-body">
+       
+
+    
+        {% csrf_token %}
+        <br>
+        <br>
+        
+        {% if error_message %}
+        <p style="color: Blue;">{{ error_message }}</p>
+        {% endif %}
+        <div style="display: flex; align-items: center;">
+            <div class="search-container" style="margin-bottom: 20px; display: flex; align-items: center;">
+                <input type="text" id="searchInput" placeholder="Search..." style="height: 40px; border-radius: 10px; margin-right: 10px;">
+                <button onclick="searchTable()" style="height: 40px; border-radius: 10px;">Search</button>
+            </div>
+            
+            <div class="col-md-4"  style="margin-bottom: 20px;">
+                <a href="{% url 'createticket' %}" class="custom-link" >
+                    <button type="submit" class="btn btn-block btn-gradient-primary btn-lg font-weight-medium auth-form-btn" style="border-radius: 10px;">Create New Ticket</button>
+                </a>
+            </div>
+        </div>
+        
+ 
+ 
+        
+        
+        <h4 class="card-title">Tickets <span style="color:pink"> Information </span></h4>
+        <div class="table-container" style="max-height: 70vh;">
+            <table class="table" id="dataTable">
+                <colgroup>
+                    <col style="width: 20%;"> <!-- Set width for Activity column -->
+                    <col style="width: 20%;"> <!-- Set width for Fault column -->
+                    <!-- Other columns -->
+                </colgroup>
+                <thead class="thead-fixed" >
+                    <tr>
+                        <th style="width: 20%;">Activity</th>
+                        <th style="width: 20%;">Fault</th>
+                        <th>Terminal  ID</th>
+                       
+                        <th>Ticket No</th>
+                        <th>Status</th>
+                        
+                        <th>Details</th> 
+                        <td>Action </td>
+                 
+                    </tr>
+                </thead>
+                <tbody class="tbody-scroll">
+                    {% for dues_summary_info in merchant_data.tickets %}
+                        <tr>
+                            <td>{{ dues_summary_info.activity}}</td>
+
+                            <td>{{ dues_summary_info.fault }}</td>
+
+                            <td>{{ dues_summary_info.terminalID }}</td>
+
+
+                            <td>{{ dues_summary_info.ticketNo}} </td>
+
+                        
+                            <td>{{ dues_summary_info.status }}</td>
+                     
+
+
+                            <td>
+                                <button type="button" class="btn btn-gradient-info  btn-rounded btn-fw col"  style="background-image: linear-gradient(to right, #f1f1f1 , #22DB54A8); color:#310D7D;" onclick="showPaymentDetails(
+                                    
+                                '{{ dues_summary_info.ticketNo}}',
+
+                                    {% comment %} '{{ dues_summary_info.terminalID }}', {% endcomment %}
+                                    {{ dues_summary_info.ticketNo}},
+                                
+                                    '{{ dues_summary_info.requesterName }}',
+
+                                    '{{ dues_summary_info.contactNo }}',
+
+                                    '{{ dues_summary_info.contactNo2 }}',
+
+                                    '{{ dues_summary_info.activity }}',
+
+                                    '{{ dues_summary_info.bankName }}',
+
+                                    '{{ dues_summary_info.vendor }}',
+
+                                    '{{ dues_summary_info.city }}',
+
+                                    '{{ dues_summary_info.priority}}',
+
+                                    '{{ dues_summary_info.fault }}',
+                                    '{{ dues_summary_info.status }}',
+                                    '{{ dues_summary_info.pendingAt }}',
+                                  
+                                    '{{ dues_summary_info.remarks }}',
+
+                                    '{{ dues_summary_info.subActivityRemarks}}',
+
+                                    '{{ dues_summary_info.createDate }}',
+                                     
+                                    '{{ dues_summary_info.openDate }}',
+
+                                    '{{ dues_summary_info.dueByDate }}',
+
+                                    
+
+                                    '{{ dues_summary_info.pendingDays }}',
+
+                                    '{{ dues_summary_info.openedBy}}',
+
+                                    '{{ dues_summary_info.closedBy }}',
+
+                                    '{{ dues_summary_info.closeDate }}',
+
+                                    '{{ dues_summary_info.problemGroup}}',
+
+                                    '{{ dues_summary_info.vendorReferenceNo }}',
+
+                                    '{{ dues_summary_info.vendorStatus}}',
+
+                                    '{{ dues_summary_info.lastTXDate }}',
+
+                                    '{{ dues_summary_info.technicianName }}',
+
+                                    '{{ dues_summary_info.terminalLocation}}',
+
+                                    '{{ dues_summary_info.deviceSerial }}',
+
+                                    '{{ dues_summary_info.internalRemarks}}',
+
+                                    '{{ dues_summary_info.bankRemarks }}',
+
+                                    '{{ dues_summary_info.totalAttachment }}',
+
+                                    '{{ dues_summary_info.visitSchedule}}',
+
+                                    '{{ dues_summary_info.emailStatus }}',
+
+                                    '{{ dues_summary_info.terminalType }}',
+
+                                    '{{ dues_summary_info.siteId }}',
+
+                                    '{{ dues_summary_info.retailerID }}',
+
+                                    '{{ dues_summary_info.description }}',
+
+                                    '{{ dues_summary_info.requestMode }}',
+
+                                    '{{ dues_summary_info.merchantTicketStatus }}',
+
+                                    '{{ dues_summary_info.merchantStatusUpdateDate }}',
+
+                                    '{{ dues_summary_info.isTicketApprovedButtonShow }}',
+
+                                    '{{ dues_summary_info.totalAttachment }}',
+                                    
+                                    '{{ dues_summary_info.visitSchedule }}'
+                                )">Details</button>
+                            </td>
+<td>
+
+    
+  <div class="row" id='terminalDropdownContainer' style="width: 60%; padding-left: 10%; padding-bottom: 2%;">
+   
+
+
+
+    <div >
+        
+        <select  style="background-image: linear-gradient(to right, #f1f1f1 ); color:#310D7D; width:85px; height:50px;" name="status" aria-label="Status" onchange="selectStatus(this)" style="color: black;"> 
+            <option>  <h5> {{dues_summary_info.merchantTicketStatus}} </h5> </option>
+            {% for terminal_info in terminal.result %} 
+            <option value="{{ terminal_info.Id }}" style="color: black;"> {{ terminal_info.Status }} </option>
+            {% endfor %}
+        </select>
+
+    </div>
+
+    
+    <input type="hidden" name="selected_status" id="selectedStatusInput" value="">
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        function selectStatus(element, ticketNo) {
+            var selectedStatusValue = element.value;
+            $('#selectedStatusInput_' + ticketNo).val(selectedStatusValue); // Update hidden input value with the selected status value
+    
+            // Get the selected option text
+            var selectedOptionText = $(element).find('option:selected').text();
+    
+            // Update the dropdown text to the selected option text
+            $(element).siblings('.form-select').text(selectedOptionText);
+    
+            var ticketID = $(element).closest('tr').find('td:eq(3)').text(); // Modify this line to target the correct column (if not the second one)
+    
+            console.log('Ticket ID:', ticketID);
+            console.log('Selected Status ID for Ticket ' + ticketNo + ':', selectedStatusValue);
+
+            
+    
+            // AJAX POST request to send data to the Django backend
+            $.ajax({
+                url: '/postatus/',  // Replace with the URL to your Django view function
+                method: 'POST',
+                data: {
+                    'ticketId': ticketID,
+                    'merchantTicketStatusId': selectedStatusValue,
+                    'csrfmiddlewaretoken': '{{ csrf_token }}'  // Add CSRF token for security (Django template tag)
+                },
+                success: function (data) {
+                    // Handle success response here
+                    console.log('Data sent successfully');
+                    // Perform any other actions upon successful response
+                },
+                error: function (error) {
+                    // Handle error response here
+                    console.error('Error sending data:', error);
+                }
+            });
+        }
+    </script>
+    
+
+    
+    
+</div>
+
+
+</td>
+                            
+
+                           
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+           
+        </div>
+   
+    
+  
+        <div id="paymentModal" class="card" style="display: none; margin-top:2%; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5); z-index: 999;">
+          <div class="card-body" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 50%; max-height: 80%; overflow: auto; color: gray; background-color: white; padding: 20px; border-radius: 10px;">
+              <h4 class="card-title ">Ticket Information</h4>
+              <ul>
+                <li><p id="terminalID"></p></li>
+                <li><p id="ticketNo"></p></li>
+                <li><p id="requesterName"></p></li>
+                <li><p id="contactNo"></p></li>
+                <li><p id="contactNo2"></p></li>
+                <li><p id="activity"></p></li>
+                <li><p id="bankName"></p></li>
+                <li><p id="vendor"></p></li>
+                <li><p id="city"></p></li>
+                <li><p id="priority"></p></li>
+                <li><p id="fault"></p></li>
+                <li><p id="status"></p></li>
+                <li><p id="pendingAt"></p></li>
+                <li><p id="remarks"></p></li>
+                <li><p id="subActivityRemarks"></p></li>
+                <li><p id="createDate"></p></li>
+                <li><p id="openDate"></p></li>
+                <li><p id="dueByDate"></p></li>
+                <li><p id="pendingDays"></p></li>
+                <li><p id="openedBy"></p></li>
+                <li><p id="closedBy"></p></li>
+                <li><p id="closeDate"></p></li>
+                <li><p id="problemGroup"></p></li>
+                <li><p id="vendorReferenceNo"></p></li>
+                <li><p id="vendorStatus"></p></li>
+                <li><p id="lastTXDate"></p></li>
+                <li><p id="technicianName"></p></li>
+                <li><p id="terminalLocation"></p></li>
+                <li><p id="deviceSerial"></p></li>
+                <li><p id="internalRemarks"></p></li>
+                <li><p id="bankRemarks"></p></li>
+                <li><p id="totalAttachment"></p></li>
+                <li><p id="visitSchedule"></p></li>
+                <li><p id="emailStatus"></p></li>
+                <li><p id="terminalType"></p></li>
+                <li><p id="siteId"></p></li>
+                <li><p id="retailerID"></p></li>
+                <li><p id="description"></p></li>
+                <li><p id="requestMode"></p></li>
+                <li><p id="merchantTicketStatus"></p></li>
+                <li><p id="merchantStatusUpdateDate"></p></li>
+                <li><p id="isTicketApprovedButtonShow"></p></li>
+                  
+
+
+                  
+                  <!-- Add other list items here -->
+                  <li><button class="btn btn-info btn-fw" id="closeBtn" onclick="closePaymentModal()">Close</button></li>
+              </ul>
+          </div>
+         
+
+      </div>
+                
+
+ 
+        
+        <script>
+            // JavaScript functions to show/hide modal
+            function showPaymentDetails(
+                terminalID, ticketNo, requesterName, contactNo, contactNo2, activity, bankName,
+                vendor, city, priority, fault, status, pendingAt, remarks, subActivityRemarks,
+                createDate, openDate, dueByDate, pendingDays, openedBy, closedBy, closeDate,
+                problemGroup, vendorReferenceNo, vendorStatus, lastTXDate, technicianName,
+                terminalLocation, deviceSerial, internalRemarks, bankRemarks, totalAttachment,
+                visitSchedule, emailStatus, terminalType, siteId, retailerID, description, requestMode, merchantTicketStatus, merchantStatusUpdateDate,  isTicketApprovedButtonShow
+            ) {
+                //document.getElementById("terminalID").innerHTML = "Terminal ID: " + terminalID;
+                document.getElementById("ticketNo").innerHTML = "Ticket No: " + ticketNo;
+                document.getElementById("requesterName").innerHTML = "Requester Name: " + requesterName;
+                document.getElementById("contactNo").innerHTML = "Contact No: " + contactNo;
+                document.getElementById("contactNo2").innerHTML = "Contact No 2: " + contactNo2;
+                document.getElementById("activity").innerHTML = "Activity: " + activity;
+                document.getElementById("bankName").innerHTML = "Bank Name: " + bankName;
+                document.getElementById("vendor").innerHTML = "Vendor: " + vendor;
+                document.getElementById("city").innerHTML = "City: " + city;
+                document.getElementById("priority").innerHTML = "Priority: " + priority;
+                document.getElementById("fault").innerHTML = "Fault: " + fault;
+                document.getElementById("status").innerHTML = "Status: " + status;
+                document.getElementById("pendingAt").innerHTML = "Pending At: " + pendingAt;
+                document.getElementById("remarks").innerHTML = "Remarks: " + remarks;
+                document.getElementById("subActivityRemarks").innerHTML = "Subactivity Remarks: " + subActivityRemarks;
+                document.getElementById("createDate").innerHTML = "Create Date: " + createDate;
+                document.getElementById("openDate").innerHTML = "Open Date: " + openDate;
+                document.getElementById("dueByDate").innerHTML = "Due By Date: " + dueByDate;
+                document.getElementById("pendingDays").innerHTML = "Pending Days: " + pendingDays;
+                document.getElementById("openedBy").innerHTML = "Opened By: " + openedBy;
+                document.getElementById("closedBy").innerHTML = "Closed By: " + closedBy;
+                document.getElementById("closeDate").innerHTML = "Close Date: " + closeDate;
+                document.getElementById("problemGroup").innerHTML = "Problem Group: " + problemGroup;
+                document.getElementById("vendorReferenceNo").innerHTML = "Vendor Reference No: " + vendorReferenceNo;
+                document.getElementById("vendorStatus").innerHTML = "Vendor Status: " + vendorStatus;
+                document.getElementById("lastTXDate").innerHTML = "Last TX Date: " + lastTXDate;
+                document.getElementById("technicianName").innerHTML = "Technician Name: " + technicianName;
+                document.getElementById("terminalLocation").innerHTML = "Terminal Location: " + terminalLocation;
+                document.getElementById("deviceSerial").innerHTML = "Device Serial: " + deviceSerial;
+                document.getElementById("internalRemarks").innerHTML = "Internal Remarks: " + internalRemarks;
+                document.getElementById("bankRemarks").innerHTML = "Bank Remarks: " + bankRemarks;
+                document.getElementById("totalAttachment").innerHTML = "Total Attachment: " + totalAttachment;
+                document.getElementById("visitSchedule").innerHTML = "Visit Schedule: " + visitSchedule;
+                // For Additional Details
+                document.getElementById("emailStatus").innerHTML = "Email Status: " + emailStatus;
+                document.getElementById("terminalType").innerHTML = "Terminal Type: " + terminalType;
+                document.getElementById("siteId").innerHTML = "Site ID: " + siteId;
+                document.getElementById("retailerID").innerHTML = "Retailer ID: " + retailerID;
+                document.getElementById("description").innerHTML = "Description: " + description;
+                document.getElementById("requestMode").innerHTML = "Request Mode: " + requestMode;
+                document.getElementById("merchantTicketStatus").innerHTML = "Merchant Ticket Status: " + merchantTicketStatus;
+                document.getElementById("merchantStatusUpdateDate").innerHTML = "Merchant Status Update Date: " + merchantStatusUpdateDate;
+                document.getElementById("isTicketApprovedButtonShow").innerHTML = "Is Ticket Approved Button Show: " + isTicketApprovedButtonShow;
+
+            
+                document.getElementById("paymentModal").style.display = "block";
+            }
+            
+        
+            function closePaymentModal() {
+                document.getElementById("paymentModal").style.display = "none";
+            }
+            
+  
+          document.getElementById("paymentModal").addEventListener("click", function() {
+              var myDiv = document.getElementById("myDiv");
+              myDiv.style.display = "block";
+              setTimeout(function() {
+                  myDiv.style.opacity = "1";
+              }, 10);
+          });
+      
+          document.getElementById("closeBtn").addEventListener("click", function() {
+              var myDiv = document.getElementById("myDiv");
+              myDiv.style.opacity = "0";
+              setTimeout(function() {
+                  myDiv.style.display = "none";
+              }, 300);
+          });
+      </script>
+       
+        
+      </div>
+    </div>
+    </div>
+  </div>
+   
+    
+    
+  <script>
+    function searchTable() {
+        var input, filter, table, tr, td, i, txtValue;
+        input = document.getElementById("searchInput");
+        filter = input.value.toUpperCase();
+        table = document.getElementById("dataTable");
+        tr = table.getElementsByTagName("tr");
+      
+        for (i = 0; i < tr.length; i++) {
+            td = tr[i].getElementsByTagName("td");
+            for (var j = 0; j < td.length; j++) {
+                cell = tr[i].getElementsByTagName("td")[j];
+                if (cell) {
+                    txtValue = cell.textContent || cell.innerText;
+                    if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                        tr[i].style.display = "";
+                        break;
+                    } else {
+                        tr[i].style.display = "none";
+                    }
+                }
+            }
+        }
+    }
+</script>
+
+
+
+
+{% endblock %}
+   

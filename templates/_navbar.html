@@ -1,0 +1,465 @@
+
+
+
+{% block header %}
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+
+    <script>
+      function googleTranslateElementInit() {
+          new google.translate.TranslateElement({
+              pageLanguage: 'en', // Replace with your default language code
+              includedLanguages: 'en,ar', // Include English and Arabic
+              layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
+              autoDisplay: false
+          }, 'google_translate_element');
+      }
+
+      // Function to trigger translation to Arabic
+      function translateToArabic() {
+          var googleTranslateScript = document.createElement('script');
+          googleTranslateScript.src = 'https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';
+          document.head.appendChild(googleTranslateScript);
+      }
+  </script>
+   
+
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Nami</title>
+    <!-- plugins:css -->
+    <link rel="stylesheet" href=" {% static 'assets/vendors/mdi/css/materialdesignicons.min.css' %}">
+    <link rel="stylesheet" href=" {% static 'assets/vendors/css/vendor.bundle.base.css' %}">
+    <link rel="stylesheet" href=" {% static 'assets/vendors/css/table.css' %}">
+       <!-- <script src="{% static 'assets/js/notifications.js' %}"></script>
+    
+ endinject -->
+    <!-- Plugin css for this page -->
+
+    <!-- Bootstrap CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+<!-- jQuery -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<!-- Bootstrap Datepicker CSS -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css">
+
+<!-- Bootstrap Datepicker JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+
+    <!-- End plugin css for this page -->
+    <!-- inject:css -->
+    <!-- endinject -->
+    <!-- Layout styles -->
+    <link rel="stylesheet" href=" {% static 'assets/css/style.css' %} ">
+    <!-- End layout styles -->
+    <link rel="shortcut icon" href=" {% static 'assets/images/fav/favicon.ico' %}" />
+
+    <style>
+ul {
+  list-style: none;
+}
+
+.custom-link {
+  text-decoration: none;
+}
+
+.rounded-profile-pic {
+  border-radius: 5%; /* Makes the image round */
+  width: 100px; /* Set the width as per your design */
+  height: 100px; /* Set the height as per your design */
+  object-fit: cover; /* Ensures the image covers the entire area */
+ 
+}
+.custom-button {
+  text-decoration: none;
+  display: flex;
+  width: 210px;
+  height: 50px;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10px;
+  background: #FFF;
+  color: #310D7D;
+  border: 2px solid #310D7D;
+  font-family: "Codec Pro", sans-serif; /* Assuming "Codec Pro" is the font name */
+  font-size: 17px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 100%;
+  outline: none;
+  cursor: pointer;
+  transition: all 0.3s ease-out;
+  transition: color 0.3s ease-out;
+  overflow: hidden;
+  
+  text-align: center; /* Center aligns the text within the button */
+}
+
+.custom-button:hover {
+  background-position: left bottom; /* Change the gradient position on hover */
+  color: white;
+  border: none;
+  background-image: linear-gradient(to right, #310D7D, #22DB54);
+  text-decoration: None;
+ 
+}
+
+
+
+.coloricon {
+  color:#310D7D;
+}
+
+
+
+/* Add this CSS to your stylesheet or style section */
+
+/* Fixed table header */
+.thead-fixed {
+    position: sticky;
+    top: 0;
+    background-color: #f9f9f9; /* Add desired background color */
+    z-index: 1;
+}
+
+/* Scrollable table body */
+.tbody-scroll {
+    max-height: 400px; /* Set max height to enable scrolling */
+    overflow-y: auto; /* Enable vertical scrollbar */
+}
+
+
+/* Define styles for active buttons */
+.active-button {
+    background-image: linear-gradient(to right, #310D7D, #22DB54);
+    color: white;
+    border: none;
+    /* Add other styles as needed */
+}
+
+
+.table-container {
+  height: 400px; /* Set the desired height */
+* Add vertical scrollbar if needed */
+}
+
+.tickets-table {
+  height: 100%; /* Ensure table takes the full height of its container */
+}
+
+
+/* Add this CSS to your stylesheet or style section */
+.inline-profile {
+    display: block;
+    margin-right: 20px; /* Adjust spacing between inline items */
+    margin-bottom: 10px; /* Adjust vertical spacing */
+}
+/* Add this CSS in your stylesheet or <style> tag */
+  .notification-scroll {
+      max-height: 350px; /* Set maximum height for scrolling */
+      overflow-y: auto; /* Enable vertical scrolling */
+  }
+  
+
+
+  #notificationDropdownContent {
+      width: 350px; /* Set the desired width */
+      
+      right: 1px;
+  }
+
+  .notification-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    z-index: 9999;
+}
+
+.notification-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+.close-notification {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+}
+
+
+.custom-select {
+  position: relative;
+  display: inline-block;
+  font-family: Arial, sans-serif;
+}
+
+.selected-option {
+  display: block;
+  padding: 8px 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  cursor: pointer;
+  background-color: #fff;
+}
+
+.selected-option:hover {
+  background-color: #f9f9f9;
+}
+
+/* Hide the default dropdown arrow */
+.custom-select select {
+  display: none;
+}
+
+/* Style the dropdown options */
+.custom-select select option {
+  padding: 8px 12px;
+  cursor: pointer;
+}
+
+/* Show dropdown options on click */
+.custom-select.active select {
+  display: block;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  border: 1px solid #ccc;
+  border-top: none;
+  border-radius: 0 0 4px 4px;
+}
+
+
+
+
+   </style>
+
+
+  </head>
+
+  
+  <nav class="navbar default-layout-navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
+    <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
+      <a class="navbar-brand brand-logo" href={% url "home" %}><img src=" {% static 'assets/images/SVG/Llogo.png' %} " alt="logo"></a>
+      <a class="navbar-brand brand-logo-mini" href={% url "home" %}><img src=" {% static 'assets/images/SVG/mini.png' %}" alt="logo_min"></a>
+    </div>
+    <div class="navbar-menu-wrapper d-flex align-items-stretch">
+      <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
+        <span class="mdi mdi-menu"></span>
+      </button>
+  
+
+    
+  
+      <ul class="navbar-nav navbar-nav-right">
+  
+        <ul class="navbar-nav navbar-nav-right">
+          <li class="nav-item dropdown">
+              <a class="nav-link count-indicator dropdown-toggle" id="notificationDropdown" href="#" data-bs-toggle="dropdown">
+                  <i class="mdi mdi-bell-outline"></i>
+                  <span class="count-symbol bg-danger" id="notificationCount"></span>
+              </a>
+          
+              <div class="dropdown-menu dropdown-menu-right dropdown-menu-end navbar-dropdown preview-list" aria-labelledby="notificationDropdown" id="notificationDropdownContent">
+                  <h6 class="p-3 mb-0">Notifications</h6>
+                  <div class="dropdown-divider"></div>
+                  <div class="notification-scroll" id="notificationScroll">
+                      <!-- Notification items will be dynamically added here -->
+                  </div>
+                 
+              </div>
+          </li>
+          <button onclick="translateToArabic()">Translate to Arabic</button>
+
+          <!-- Google Translate element container -->
+          
+      </ul>
+  
+      <div class="notification-overlay" id="notificationOverlay">
+        <div class="notification-content">
+            <span class="close-notification" id="closeNotification">&times;</span>
+            <h4 id="notificationTitle"></h4>
+            <p id="notificationDescription"></p>
+        </div>
+    </div>
+
+
+    <!-- Your HTML code remains unchanged -->
+
+{% csrf_token %}
+<script>
+    $(document).ready(function() {
+        function displayNotifications() {
+            $.ajax({
+                url: '/display_notifications/',
+                method: 'GET',
+                success: function(response) {
+                    if (response.success) {
+                        var notifications = response.result;
+                        var notificationScroll = $('#notificationScroll');
+                        var notificationCount = $('#notificationCount');
+
+                        notificationScroll.empty();
+                        notificationCount.text(notifications.length); // Set notification count
+
+                        notifications.forEach(function(notification) {
+                            var notificationItem = `
+                                <a class="dropdown-item preview-item" data-id="${notification.ID}">
+                                  <div class="preview-thumbnail">
+                                    <div class="preview-icon bg-success">
+                                      <i class="mdi mdi-calendar"></i>
+                                    </div>
+                                  </div>
+                                    <div class="preview-item-content">
+                                        <h6 class="preview-subject font-weight-medium">${notification.Title}</h6>
+                                        <p class="text-muted mb-0">${notification.Description}</p>
+                                    </div>
+                                </a>
+                            `;
+                            notificationScroll.append(notificationItem);
+                        });
+                    } else {
+                        console.error('Failed to fetch notifications');
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error fetching notifications:', error);
+                }
+            });
+        }
+
+        // Function to handle click on notification items
+        $(document).on('click', '.preview-item', function() {
+            var notificationID = $(this).data('id');
+            console.log('Clicked notification ID:', notificationID);
+
+            // Perform any action with the notification ID here
+        });
+
+        // Call the function to display notifications when the document is ready
+        
+
+        // Function to handle click on notification items
+        $(document).on('click', '.preview-item', function() {
+            var notificationID = $(this).data('id');
+            var notificationTitle = $(this).find('.preview-subject').text();
+            var notificationDescription = $(this).find('p').text();
+
+            $('#notificationTitle').text(notificationTitle);
+            $('#notificationDescription').text(notificationDescription);
+
+            $('#notificationOverlay').fadeIn();
+        });
+
+        // Function to close notification overlay
+        $('#closeNotification').click(function() {
+            $('#notificationOverlay').fadeOut();
+        });
+
+        // Function to handle click on notification items and mark as seen
+        function handleNotificationClick(notificationID, notificationTitle, notificationDescription) {
+            // Update the UI with the notification details
+            $('#notificationTitle').text(notificationTitle);
+            $('#notificationDescription').text(notificationDescription);
+
+            // Get the CSRF token value
+            $('#notificationOverlay').fadeIn();
+            var csrftoken = $('[name=csrfmiddlewaretoken]').val();
+
+            // Call an API to mark the notification as seen
+            $.ajax({
+                url: '/mark_notification_as_seen/',
+                method: 'POST',
+                headers: { 'X-CSRFToken': csrftoken }, // Include CSRF token in headers
+                data: { notificationID: notificationID },
+                success: function(response) {
+                    // Update the notification count if the request is successful
+                    if (response.success) {
+                        var newNotificationCount = response.newNotificationCount;
+                        $('#notificationCount').text(newNotificationCount); // Update the notification count on the UI
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error marking notification as seen:', error);
+                }
+            });
+
+            // Display the notification overlay
+            $('#notificationOverlay').fadeIn();
+        }
+
+        $(document).on('click', '.preview-item', function() {
+          var notificationID = $(this).data('id');
+          var notificationTitle = $(this).find('.preview-subject').text();
+          var notificationDescription = $(this).find('p').text();
+
+          // Call the function to handle the notification click
+          handleNotificationClick(notificationID, notificationTitle, notificationDescription);
+      });
+    });
+</script>
+
+    
+
+  
+  
+  
+  
+        <li class="nav-item nav-profile dropdown  ">
+          <a class="nav-link dropdown-toggle" id="profileDropdown" href="#" data-bs-toggle="dropdown" aria-expanded="false">
+            <div class="nav-profile-img">
+              <img src=" {% static 'assets/images/faces/face1.jpg' %} " alt="profile">
+              <span class="availability-status online"></span>
+            </div>
+            <div class="nav-profile-text">
+  
+            </div>
+          </a>
+          <div class="dropdown-menu navbar-dropdown" aria-labelledby="profileDropdown">
+            <a class="dropdown-item" href="#">
+              <i class="mdi mdi-cached me-2 text-success"></i> Activity Log </a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href={% url "PrivacyPolicy" %}>
+              <i class="mdi mdi-shield-outline me-2 text-success"></i>Privacy Policy </a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href={% url "TremsOfServices" %}>
+              <i class="mdi mdi-file-outline me-2 text-success"></i>Terms of services</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href={% url "password" %}>
+              <i class="mdi mdi-lock-open-outline me-2 text-success"></i> Reset Password </a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href={% url "logout" %}>
+              <i class="mdi mdi-logout me-2 text-primary"></i> Signout </a>
+          </div>
+        </li>
+  
+    </ul>
+  
+    <button class="navbar-toggler spil navbar-toggler-right d-lg-none align-self-center" type="button" data-toggle="offcanvas">
+      <span class="mdi mdi-menu"></span>
+    </button>
+  
+  </div>
+  </nav>
+  
+  
+  
+  {% endblock %} 

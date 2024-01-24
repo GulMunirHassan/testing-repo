@@ -1,0 +1,177 @@
+
+
+{% extends "base.html" %}
+
+{% block content %}
+
+{% load static %}
+
+      
+
+<div class="main-panel">
+  <div class="content-wrapper">
+    
+    <div class="card">
+      <div class="card-body">
+       
+
+    
+        {% csrf_token %}
+        <br>
+        <br>
+        
+        {% if error_message %}
+        <p style="color: Blue;">{{ error_message }}</p>
+        {% endif %}
+        <div class="search-container" style="margin-bottom: 20px;">
+            <input type="text" id="searchInput" placeholder="Search...">
+            <button onclick="searchTable()">Search</button>
+        </div>
+        
+        <h4 class="card-title">Tickets <span style="color:pink"> Information </span></h4>
+        <div class="table-container" style="max-height: 70vh; ">
+            <table class="table" id="dataTable" style="width:60%; ">
+                <thead class="thead-fixed" >
+                    <tr>
+                        <th>Activity</th>
+                        <th>Fault</th>
+                        <th>Terminal  ID</th>
+                        <th>Description</th>
+                        <th>Status</th>
+                        <th>Details</th> 
+                 
+                    </tr>
+                </thead>
+                <tbody class="tbody-scroll" >
+                     {% for dues_summary_info in merchant_data.tickets %}
+                        <tr>
+                            <td>{{ dues_summary_info.activity}}</td>
+                            <td>{{ dues_summary_info.fault }}</td>
+                            <td>{{ dues_summary_info.terminalID }}</td>
+                            <td>{{ dues_summary_info.description }}</td>
+                            <td>{{ dues_summary_info.status }}</td>
+
+                            <td>
+                                <button type="button" class="btn btn-gradient-info  btn-rounded btn-fw col"  style="background-image: linear-gradient(to right, #f1f1f1 , #22DB54A8); color:#310D7D;" onclick="showPaymentDetails(
+                                    '{{ dues_summary_info.terminalID }}',
+                                    '{{ dues_summary_info.ticketNo }}',
+                         {% comment %}
+                         
+                                    '{{ dues_summary_info.requesterName }}',
+                                    '{{ dues_summary_info.contactNo }}',
+                                    '{{ dues_summary_info.contactNo2 }}',
+                                    '{{ dues_summary_info.activity }}',
+                                    '{{ dues_summary_info.bankName }}',
+                                    '{{ dues_summary_info.vendor }}',
+                                    '{{ dues_summary_info.city }}',
+                                    '{{ dues_summary_info.priority}}',
+                                    '{{ dues_summary_info.fault }}',
+                                    '{{ dues_summary_info.status }}',
+                                    '{{ dues_summary_info.pendingAt }}'
+
+                                     '{{ dues_summary_info.remarks }}',
+                                    '{{ dues_summary_info.subActivityRemarks}}',
+                                    '{{ dues_summary_info.createDate }}',
+                                    '{{ dues_summary_info.openDate }}',
+                                    '{{ dues_summary_info.dueByDate }}'
+
+                                    '{{ dues_summary_info.pendingDays }}',
+                                    '{{ dues_summary_info.openedBy}}',
+                                    '{{ dues_summary_info.closedBy }}',
+                                    '{{ dues_summary_info.closeDate }}',
+                                    '{{ dues_summary_info.problemGroup}}'
+
+                                    '{{ dues_summary_info.vendorReferenceNo }}',
+                                    '{{ dues_summary_info.vendorStatus}}',
+                                    '{{ dues_summary_info.lastTXDate }}',
+                                    '{{ dues_summary_info.technicianName }}',
+
+                                    '{{ dues_summary_info.terminalLocation}}'
+                                    '{{ dues_summary_info.deviceSerial }}',
+                                    '{{ dues_summary_info.internalRemarks}}',
+                                    '{{ dues_summary_info.bankRemarks }}',
+                                    '{{ dues_summary_info.totalAttachment }}',
+                                    '{{ dues_summary_info.visitSchedule}}' {% endcomment %}
+
+
+
+
+
+                                )">Tickets Details</button>
+                            </td>
+      
+                    </tr> 
+                    {% endfor %}
+                </tbody>
+            </table>
+           
+        </div>
+   
+      
+        <div id="paymentModal" class="card" style="display: none; margin-top:2%; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5); z-index: 999;">
+          <div class="card-body" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 50%; max-height: 80%; overflow: auto; color: gray; background-color: white; padding: 20px; border-radius: 10px;">
+              <h4 class="card-title ">Payment Details</h4>
+              <ul>
+                  <li><p id="terminalID"></p></li>
+                  <li><p id="ticketNo"></p></li>
+              {% comment %}    <li><p id="requesterName"></p></li>
+                  <li><p id="totalSettledTx"></p></li>
+                   <li><p id="totalTxAmount"></p></li>
+                  <li><p id="appliedFees"></p></li>
+                  <li><p id="vat"></p></li>
+                  <li><p id="netTxAmount"></p></li>
+                  <li> <p id="adjustmentAmount"></p></li>
+                  <li><p id="transferCharge"></p></li>
+                  <li><p id="debitBank"></p></li>
+                  <li><p id="creditBank"></p></li>
+                  <li> <p id="creditAccount"></p></li> {% endcomment %}
+                  <!-- Add other list items here -->
+                  <li><button class="btn btn-info btn-fw" id="closeBtn" onclick="closePaymentModal()">Close</button></li>
+              </ul>
+          </div>
+         
+
+      </div>
+                
+
+ 
+        
+        <script>
+            // JavaScript functions to show/hide modal
+            document.addEventListener("DOMContentLoaded", function() {
+                // JavaScript functions to show/hide modal and handle button clicks
+                function showPaymentDetails(
+                    terminalID, ticketNo
+                ) {
+                    document.getElementById("terminalID").innerHTML = "Terminal ID: " + terminalID;
+                    document.getElementById("ticketNo").innerHTML = "Ticket No: " + ticketNo;
+                    // Update other fields if needed using the same approach
+                    document.getElementById("paymentModal").style.display = "block";
+                }
+            
+                function closePaymentModal() {
+                    document.getElementById("paymentModal").style.display = "none";
+                }
+            
+                document.getElementById("closeBtn").addEventListener("click", function() {
+                    closePaymentModal();
+                });
+            
+                // You can add additional event listeners or modifications here
+            });
+            
+      </script>
+       
+        
+      </div>
+    </div>
+    </div>
+  </div>
+   
+    
+    
+
+
+
+{% endblock %}
+   

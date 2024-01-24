@@ -1,0 +1,149 @@
+
+
+{% extends "base.html" %}
+
+{% block content %}
+
+{% load static %}
+
+      
+
+<div class="main-panel">
+  <div class="content-wrapper">
+    
+    <div class="card">
+      <div class="card-body">
+       
+
+        {% include "payment_button.html" %}
+        <br>
+        <br>
+
+        <h4 class="card-title" >Payment <span style="color:pink "> Summary </span></h4>
+        <div class="table-container" style="max-height:410px">
+            <table class="table" >
+                <thead>
+                    <tr>
+                        <th>Payment Amount</th>
+                        <th>Payment Date</th>
+                        <th>Payment Details</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for payment_info in merchant_data.result.PAYMENT_DETAILS %}
+                        <tr>
+                            <td>{{ payment_info.Payment_Amount }}</td>
+                            <td>{{ payment_info.Payment_Date }}</td>
+                            <td>
+                                <button type="button" class="btn btn-gradient-info  btn-rounded btn-fw col"  style="background-image: linear-gradient(to right, #f1f1f1 , #22DB54A8); color:#310D7D;" onclick="showPaymentDetails(
+                                    '{{ payment_info.Payment_Amount }}',
+                                    '{{ payment_info.Payment_Date }}',
+                                    '{{ payment_info.Payment_Reference_Number }}',
+                                    '{{ payment_info.Total_Settled_Tx }}',
+                                    '{{ payment_info.Total_Tx_Amount }}',
+                                    '{{ payment_info.Applied_Fees }}',
+                                    '{{ payment_info.VAT }}',
+                                    '{{ payment_info.Net_Tx_Amount }}',
+                                    '{{ payment_info.Adjustment_Amount }}',
+                                    '{{ payment_info.Transfer_Charge }}',
+                                    '{{ payment_info.Debit_Bank }}',
+                                    '{{ payment_info.Credit_Bank }}',
+                                    '{{ payment_info.Credit_Account }}'
+                                )">Payment Details</button>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+           
+        </div>
+   
+        <a href="{% url 'pdf' %}" class="custom-link"  style="text-decoration: none;">
+            <button class="custom-button mdi mdi-file-outline "> <span style="margin-left: 4%;"> Genrate PDF </span> </button>
+          </a>
+  
+        <div id="paymentModal" class="card" style="display: none; margin-top:2%; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5); z-index: 999;">
+          <div class="card-body" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 50%; max-height: 80%; overflow: auto; color: gray; background-color: white; padding: 20px; border-radius: 10px;">
+              <h4 class="card-title ">Payment Details</h4>
+              <ul>
+                  <li><p id="paymentAmount"></p></li>
+                  <li><p id="paymentDate"></p></li>
+                  <li><p id="paymentReferenceNumber"></p></li>
+                  <li><p id="totalSettledTx"></p></li>
+                  <li><p id="totalTxAmount"></p></li>
+                  <li><p id="appliedFees"></p></li>
+                  <li><p id="vat"></p></li>
+                  <li><p id="netTxAmount"></p></li>
+                  <li> <p id="adjustmentAmount"></p></li>
+                  <li><p id="transferCharge"></p></li>
+                  <li><p id="debitBank"></p></li>
+                  <li><p id="creditBank"></p></li>
+                  <li> <p id="creditAccount"></p></li>
+                  <!-- Add other list items here -->
+                  <li><button class="btn btn-info btn-fw" id="closeBtn" onclick="closePaymentModal()">Close</button></li>
+              </ul>
+          </div>
+         
+
+      </div>
+                
+
+ 
+        
+        <script>
+            // JavaScript functions to show/hide modal
+            function showPaymentDetails(
+                amount, date, referenceNumber, settledTx, txAmount, appliedFees, vat,
+                netTxAmount, adjustmentAmount, transferCharge, debitBank, creditBank, creditAccount
+            ) {
+                document.getElementById("paymentAmount").innerHTML = "Payment Amount : " + amount;
+                document.getElementById("paymentDate").innerHTML = "Payment Date : " + date;
+                document.getElementById("paymentReferenceNumber").innerHTML = "Payment Reference Number : " + referenceNumber;
+                document.getElementById("totalSettledTx").innerHTML = "Total Settled Tx : " + settledTx;
+                document.getElementById("totalTxAmount").innerHTML = "Total Tx Amount: " + txAmount;
+                document.getElementById("appliedFees").innerHTML = "Applied Fees: " + appliedFees;
+                document.getElementById("vat").innerHTML = "VAT: " + vat;
+                document.getElementById("netTxAmount").innerHTML = "Net Tx Amount: " + netTxAmount;
+                document.getElementById("adjustmentAmount").innerHTML = "Adjustment Amount: " + adjustmentAmount;
+                document.getElementById("transferCharge").innerHTML = "Transfer Charge: " + transferCharge;
+                document.getElementById("debitBank").innerHTML = "Debit Bank: " + debitBank;
+                document.getElementById("creditBank").innerHTML = "Credit Bank: " + creditBank;
+                document.getElementById("creditAccount").innerHTML = "Credit Account: " + creditAccount;
+                document.getElementById("paymentModal").style.display = "block";
+            }
+        
+            function closePaymentModal() {
+                document.getElementById("paymentModal").style.display = "none";
+            }
+            
+  
+          document.getElementById("paymentModal").addEventListener("click", function() {
+              var myDiv = document.getElementById("myDiv");
+              myDiv.style.display = "block";
+              setTimeout(function() {
+                  myDiv.style.opacity = "1";
+              }, 10);
+          });
+      
+          document.getElementById("closeBtn").addEventListener("click", function() {
+              var myDiv = document.getElementById("myDiv");
+              myDiv.style.opacity = "0";
+              setTimeout(function() {
+                  myDiv.style.display = "none";
+              }, 300);
+          });
+      </script>
+       
+        
+      </div>
+    </div>
+    </div>
+  </div>
+   
+    
+    
+
+
+
+{% endblock %}
+   

@@ -1,0 +1,67 @@
+
+
+{% extends "base.html" %}
+
+{% block content %}
+
+{% load static %}
+
+      
+
+<div class="main-panel">
+  <div class="content-wrapper">
+    
+    <div class="card">
+      <div class="card-body">
+       
+        <a href={% url "adadjustment" %} class="custom-link">
+          <button type="button" class="custom-button {% if request.path == '/adadjustment/' %}active-button{% endif %}"  style="display: inline; width:20%">Settlement Adustment</button></a>
+          <a href={% url "addue" %} class="custom-link">
+          <button type="button" class="custom-button {% if request.path == '/adjustmedue/' %}active-button{% endif %}"  style="display: inline; width:20%">Due Adjustment</button></a>
+        {% csrf_token %}
+        <br>
+        <br>
+        
+   
+        <h4 class="card-title">Settled <span style="color:pink"> Adjustement </span></h4>
+        <div class="table-container" style="max-height: 70vh; overflow-y: auto;">
+            <table class="table" >
+                <thead class="thead-fixed"  >
+                    <tr>
+                        <th>Adjustement Amount</th>
+                        <th>Due Date</th>
+                        <th>Terminal ID</th>
+
+                    </tr>
+                </thead>
+                <tbody  class="tbody-scroll" >
+                  {% for dues_summary_info in merchant_data.result.All_Settled_Adjustment_Details %}
+                  <tr>
+                      <td>{{ dues_summary_info.Adjustment_Amount }}</td>
+                      <td>{{ dues_summary_info.Due_Date }}</td>
+                      <td>{{ dues_summary_info.Terminal_ID }}</td>
+                  </tr>
+              {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        
+       
+      </div>
+    </div>
+    </div>
+  </div>
+   
+    
+    
+
+
+ <!-- Add more Sider ended -->
+
+
+
+              
+          <!-- content-wrapper ends -->
+          <!-- partial:partials/_footer.html -->
+{% endblock %}
+   

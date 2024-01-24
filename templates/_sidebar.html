@@ -1,0 +1,87 @@
+{% block sider %}
+ {% load static %}
+
+
+
+  
+<div class="container-fluid page-body-wrapper">
+  <!-- partial:partials/_sidebar.html -->
+  <nav class="sidebar sidebar-offcanvas" id="sidebar" >
+    <ul class="nav">
+      <li class="nav-item nav-profile" >
+        <a href = "/profile/" class="nav-link" >
+          <div class="nav-profile-image">
+            <img src=" {% static 'assets/images/faces/face1.jpg' %} " alt="profile">
+            <span class="login-status online"></span>
+            <!--change to offline or busy as needed-->
+          </div>
+          <div class="nav-profile-text d-flex flex-column">
+            <span class="font-weight-bold mb-2"><p> {{ username }}</p></span>
+            <span class="text-secondary text-small">Merchant</span>
+          </div>
+          <i class="mdi mdi-bookmark-check text-success nav-profile-badge"></i>
+        </a>
+      </li>
+      <li class="nav-item">
+        <li class="nav-item active">
+          <a class="nav-link" href="/home/">
+            <span class="menu-title" style="color:#310D7D; ">Dashboard</span>
+            <i class="mdi mdi-home menu-icon" style="color:#310D7D; "></i>
+          </a>
+</li>
+<li class="nav-item active">
+        <a class="nav-link" data-toggle="collapse" href="/marchant/" aria-expanded="false" aria-controls="security-administration">
+          <span class="menu-title" style="color:#310D7D; ">Merchant</span>
+          <i class="mdi mdi-contacts menu-icon" style="color:#310D7D; "></i>
+        </a>
+</li>
+
+<li class="nav-item active" style="color:#310D7D; ">
+        <a class="nav-link" data-toggle="collapse" href="/paymentsummary/" aria-expanded="false" aria-controls="security-administration">
+          <span class="menu-title"  style="color:#310D7D; ">Payments Transaction</span>
+          <i class="mdi mdi-notification-clear-all menu-icon" style="color:#310D7D;"></i>
+        </a>
+</li>
+
+<li class="nav-item active">
+        <a class="nav-link" data-toggle="collapse" href="/adadjustment/" aria-expanded="false" aria-controls="security-administration">
+          <span class="menu-title coloricon " style="color:#310D7D; ">Adjustment</span>
+          <i class="mdi mdi-buffer menu-icon coloricon " style="color:#310D7D; " ></i>
+        </a>
+      </li>
+      <li class="nav-item active">
+        <a class="nav-link" data-toggle="collapse" href="/complainticket/" aria-expanded="false" aria-controls="security-administration">
+          <span class="menu-title coloricon " style="color:#310D7D; ">Complain Ticket</span>
+          <i class="mdi mdi-ticket-account menu-icon coloricon " style="color:#310D7D; " ></i>
+        </a>
+      </li>
+<li class="nav-item active">
+        <a class="nav-link" data-toggle="collapse"  href="/search/" aria-expanded="false" aria-controls="security-administration">
+          <span class="menu-title coloricon " style="color:#310D7D; ">Search Transaction</span>
+          <i class="mdi mdi-magnify menu-icon  " style="color:#310D7D; "></i>
+        </a>
+      </li>
+
+      <li class="nav-item active">
+        <a class="nav-link" data-toggle="collapse"  href="/history/" aria-expanded="false" aria-controls="security-administration">
+          <span class="menu-title coloricon " style="color:#310D7D; ">Transaction History</span>
+          <i class="mdi mdi-clock-outline menu-icon  " style="color:#310D7D; "></i>
+        </a>
+      </li>
+
+<li class="nav-item active">
+        <a class="nav-link" data-toggle="collapse" href="/ticket/" aria-expanded="false" aria-controls="security-administration">
+          <span class="menu-title coloricon " style="color:#310D7D; " >Support/Ticket</span>
+          <i class="mdi mdi-ticket-confirmation menu-icon" style="color:#310D7D; "></i>
+        </a>
+      </li>
+        
+      
+
+          
+        
+  </nav>
+  
+
+  
+{% endblock  %}

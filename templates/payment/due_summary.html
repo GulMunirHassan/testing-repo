@@ -1,0 +1,71 @@
+
+
+{% extends "base.html" %}
+
+{% block content %}
+
+{% load static %}
+
+      
+
+<div class="main-panel">
+  <div class="content-wrapper">
+    
+    <div class="card">
+      <div class="card-body">
+       
+
+        {% include "payment_button.html" %}
+        {% csrf_token %}
+        <br>
+        <br>
+        
+   
+        
+        <h4 class="card-title">Dues Summary <span style="color:pink"> Information </span></h4>
+        <div class="table-container">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Due Transaction</th>
+                        <th>Due Transaction Amount</th>
+                        <th>Due Fees</th>
+                        <th>Due VAT</th>
+                        <th>Due Adjustment Amount</th>
+                        <th>Net Due Amount</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for dues_summary_info in merchant_data.result.DUES_SUMMARY %}
+                        <tr>
+                            <td>{{ dues_summary_info.Due_Tx }}</td>
+                            <td>{{ dues_summary_info.Due_Tx_Amount }}</td>
+                            <td>{{ dues_summary_info.Due_Fees }}</td>
+                            <td>{{ dues_summary_info.Due_VAT }}</td>
+                            <td>{{ dues_summary_info.Due_Adjustment_Amount }}</td>
+                            <td>{{ dues_summary_info.Net_Due_Amount }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        
+       
+      </div>
+    </div>
+    </div>
+  </div>
+   
+    
+    
+
+
+ <!-- Add more Sider ended -->
+
+
+
+              
+          <!-- content-wrapper ends -->
+          <!-- partial:partials/_footer.html -->
+{% endblock %}
+   

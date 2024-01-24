@@ -1,0 +1,59 @@
+
+
+{% extends "base.html" %}
+
+{% block content %}
+
+{% load static %}
+
+      
+
+<div class="main-panel">
+  <div class="content-wrapper">
+    
+    <div class="card">
+      <div class="card-body">
+       
+
+        {% include "merchant_button.html" %}
+        <br>
+        <br>
+
+        <h4 class="card-title">Payment <span style="color:pink"> Information </span></h4>
+        <div class="table-container">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Last Settled Amount</th>
+                        <th>Net Due Amount</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for payment_info in merchant_data.result.PAYMENT_INFO %}
+                        <tr>
+                            <td>{{ payment_info.Last_Settled_Amount }}</td>
+                            <td>{{ payment_info.Net_Due_Amount }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+       
+      </div>
+    </div>
+    </div>
+  </div>
+   
+    
+    
+
+
+ <!-- Add more Sider ended -->
+
+
+
+              
+          <!-- content-wrapper ends -->
+          <!-- partial:partials/_footer.html -->
+{% endblock %}
+   

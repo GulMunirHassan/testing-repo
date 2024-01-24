@@ -1,0 +1,60 @@
+
+
+{% extends "base.html" %}
+
+{% block content %}
+
+{% load static %}
+
+{% csrf_token %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      
+{% if response_data.success %}
+  <p>User Successfully Logged In</p>
+
+
+
+
+  
+  {% if response_data.result %}
+    <!-- Display user-related information -->
+    <p>User Name: {{ response_data.result.Username }}</p>
+    <p>Customer ID: {{ response_data.result.CustomerID }}</p>
+    <p>Mobile Number: {{ response_data.result.MobileNumber }}</p>
+    <!-- Add other fields as needed -->
+  {% endif %}
+  
+{% else %}
+  <p>Login Failed</p>
+{% endif %}
+
+    
+
+
+ <!-- Add more Sider ended -->
+
+
+
+              
+          <!-- content-wrapper ends -->
+          <!-- partial:partials/_footer.html -->
+{% endblock %}
+   

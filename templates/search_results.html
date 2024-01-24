@@ -1,0 +1,126 @@
+
+
+{% extends "base.html" %}
+
+{% block content %}
+
+{% load static %}
+
+      
+<div class="main-panel">
+  <div class="content-wrapper">
+
+
+    <div class="col-12">
+        <div class="card">
+          <div class="card-body">
+            <h4 class="card-title">Search</h4>
+   
+  
+             
+            <form method="post" action="{% url 'find' %}">
+            {% csrf_token %}
+              <div class="row">
+                  <div class="form-group col-md-2">
+                      <label>From</label>
+                      <input name="from_date" type="date" class="form-control" placeholder="From Date" aria-label="From Date">
+                  </div>
+          
+                  <div class="form-group col-md-2">
+                      <label>To</label>
+                      <input name="to_date" type="date" class="form-control" placeholder="To Date" aria-label="To Date" value="{{ default_to_date }}">
+                  </div>
+          
+                  <div class="col-md-2">
+                      <div class="form-group">
+                          <label for="input1">Terminal ID</label>
+                          <input name="terminal_id" type="text" class="form-control" id="input1" placeholder="Terminal ID">
+                      </div>
+                  </div>
+          
+                  <div class="col-md-2">
+                      <div class="form-group">
+                          <label for="input2">Reference Number</label>
+                          <input name="reference_number" type="text" class="form-control" id="input2" placeholder="Reference Number">
+                      </div>
+                  </div>
+          
+                  <div class="col-md-2">
+                      <div class="form-group">
+                          <label for="input3">Approval Code</label>
+                          <input name="approval_code" type="text" class="form-control" id="input3" placeholder="Approval Code">
+                      </div>
+                  </div>
+          
+                  <div class="col-md-2">
+                      <div class="form-group">
+                          <label for="input4">Amount</label>
+                          <input name="amount" type="text" class="form-control" id="input4" placeholder="Transaction Amount">
+                      </div>
+                  </div>
+          
+                  <div class="col-md-1">
+                      <div class="form-group">
+                          <button type="submit" class="custom-button" style="width:120px">Search</button>
+                      </div>
+                  </div>
+              </div>
+          </form>
+          
+  
+  
+        </div>
+  
+        <div class="card-body">
+        <h4 class="card-title">Search Result <span style="color:pink"> Transactions </span></h4>
+        <div class="table-container" style="max-height: 100vh; overflow-y: auto;">
+            {% if error_message %}
+                <p style="color: red;">{{ error_message }}</p>
+                {% endif %}
+            <table class="table">
+                <thead  class="thead-fixed" >
+
+                    <tr>
+                        <th>Terminal_ID</th>
+                        <th>Transaction_Date</th>
+                        <th>Transaction_Reference_Number</th>
+                        <th>Approval_Code</th>
+                        <th>Card</th>
+                        <th>Due Transaction Amount</th>
+                        <th>Applied_Fees</th>         
+                        <th>VAT</th>
+                        <th>Settlement_Status</th>
+                        <th>Payment_Reference_Number</th>
+                        <th>Payment_Date</th>
+
+                    </tr>
+                </thead>
+                <tbody  class="tbody-scroll" >
+                    {% for dues_summary_info in merchant_data %}
+                        <tr>
+                            <td>{{ dues_summary_info.Terminal_ID }}</td>
+                            <td>{{ dues_summary_info.Transaction_Date }}</td>
+                            <td>{{ dues_summary_info.Transaction_Reference_Number }}</td>
+                            <td>{{ dues_summary_info.Approval_Code }}</td>
+                            <td>{{ dues_summary_info.Card }}</td>
+                            <td>{{ dues_summary_info.Transaction_Amount }}</td>
+                            <td>{{ dues_summary_info.Applied_Fees }}</td>
+                            <td>{{ dues_summary_info.VAT }}</td>
+                            <td>{{ dues_summary_info.Settlement_Status }}</td>
+                            <td>{{ dues_summary_info.Payment_Reference_Number }}</td>
+                            <td>{{ dues_summary_info.Payment_Date }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+  </div>
+</div>
+
+              
+          <!-- content-wrapper ends -->
+          <!-- partial:partials/_footer.html -->
+{% endblock %}
+   

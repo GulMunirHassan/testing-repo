@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Trancations</title>
+</head>
+<body>
+   
+    {% load static %}
+    <table style="border-collapse: collapse; width: 100%; padding: 5px;">
+        <thead>
+            <tr>
+                <th>
+                    <div style="width: 100%; text-align: center; background-color: white; margin-top: 20px;">
+                        <img src="http://127.0.0.1:8000/static/assets/images/SVG/Llong.jpg" alt="Main Logo" style="width: 300px; height: 200px; background-color: white;">
+                    </div>
+                </th>
+            </tr>
+            
+            <tr >
+                <th >Payment Ref#</th>
+                <th >Total Settled Tx</th>
+                <th >Total Tx Amount</th>
+                <th >Fees</th>
+                <th >Vat</th>
+                <th >Net Tx Amount</th>
+                <th >Adjustment Amount</th>
+                <th >Payment Date</th>
+                <th >Credit Bank</th>
+                <th >Credit Account</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for payment_info in merchant_data.result.PAYMENT_DETAILS %}
+                <tr>
+                    <td >{{ payment_info.Payment_Reference_Number }}</td>
+                    <td >{{ payment_info.Total_Settled_Tx }}</td>
+                    <td >{{ payment_info.Total_Tx_Amount }}</td>
+                    <td >{{ payment_info.Applied_Fees }}</td>
+                    <td >{{ payment_info.VAT }}</td>
+                    <td >{{ payment_info.Net_Tx_Amount }}</td>
+                    <td >{{ payment_info.Adjustment_Amount }}</td>
+                    <td >{{ payment_info.Payment_Date|slice:":10" }} {{ payment_info.Payment_Date|slice:"-8:" }} </td>
+                    <td >{{ payment_info.Credit_Bank }}</td>
+                    <td >{{ payment_info.Credit_Account|slice:":10"  }}  {{ payment_info.Credit_Account|slice:"-7:"  }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    
+    <div style="position: fixed; bottom: 0; left: 0; width: 100%; text-align: center; background-color: white; margin-top:20px;">
+        <img src="http://127.0.0.1:8000/static/assets/images/SVG/Fotter.jpg" alt="Logo">
+    </div>
+    
+           
+        </div>
+   
+</body>
+</html>

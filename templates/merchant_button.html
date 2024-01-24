@@ -1,0 +1,23 @@
+
+{% block content %}
+
+
+
+<div style="display: inline;">
+   
+<a href="{% url 'marchant' %}"  style="text-decoration: none;">
+    <button type="button" class="custom-button {% if request.path == '/marchant/' %}active-button{% endif %}" style="display: inline; width: 10%;">Merchant</button>
+</a>
+
+<a href="{% url 'marchantbranch' %}" style="text-decoration: none;">
+    <button type="button" class="custom-button {% if request.path == '/marchantbranch/' %}active-button{% endif %}" style="display: inline; width: 10%;">Branch</button>
+</a>
+
+<a href={% url "marchantaccount" %}  style="text-decoration: none;">
+<button type="button" class="custom-button {% if request.path == '/marchantaccount/' %}active-button{% endif %}" style="display: inline; width:15%">Bank Account</button></a>
+<a href={% url "marchantterminal" %} style="text-decoration: none;">
+<button type="button" class="custom-button {% if request.path == '/marchantterminal/' %}active-button{% endif %}" style="display: inline; width:10% " >Terminal</button></a>
+<a href={% url "marchantpayment" %} style="text-decoration: none;">
+<button type="button" class="custom-button {% if request.path == '/marchantpayment/' %}active-button{% endif %}" style="display: inline; width:10%">Payment</button></a>
+</div>
+{% endblock %}
