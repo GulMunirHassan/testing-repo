@@ -31,9 +31,4 @@ pipeline {
         }
         // Add additional stages as necessary (like Django setup, testing, etc.)
     }
-    post {
-        always {
-            // Post-build actions (like cleanup, notifications)
-        }
-    }
 }
