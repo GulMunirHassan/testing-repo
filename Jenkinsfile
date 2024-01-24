@@ -109,7 +109,7 @@ pipeline {
                 def dockerHubCredentials = 'gulmunir'
 
                 // Log in to Docker Hub
-                withCredentials([usernamePassword(credentialsId: dockerHubCredentials, usernameVariable: 'gulmunir', passwordVariable: '19cs49@munna^tech')]) {
+                withCredentials([usernamePassword(credentialsId: dockerHubCredentials, usernameVariable: 'DOCKERHUB_USERNAME', passwordVariable: 'DOCKERHUB_PASSWORD')]) {
                     sh "echo $DOCKERHUB_PASSWORD | docker login -u $DOCKERHUB_USERNAME --password-stdin"
                 }
 
