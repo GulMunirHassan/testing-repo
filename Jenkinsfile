@@ -15,7 +15,7 @@ pipeline {
                     sh 'python3 -m venv venv'
                     // Activate the virtual environment
                     if (isUnix()) {
-                        sh 'source venv/bin/activate'
+                        sh 'bash -c ". venv/bin/activate"'
                     } else {
                         bat 'venv\\Scripts\\activate.bat'
                     }
