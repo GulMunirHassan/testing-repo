@@ -1,5 +1,7 @@
-node {
-  stage('SCM') {
+pipeline {
+  agent any
+  stages{
+    stage('SCM') {
     checkout scm
   }
   stage('SonarQube Analysis') {
@@ -17,4 +19,5 @@ node {
         
         dependencyCheckPublisher pattern: 'dependency-check-report.xml'
     }
-        }
+  }
+}
