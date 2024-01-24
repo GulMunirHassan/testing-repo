@@ -1,23 +1,39 @@
 pipeline {
-  agent any
-  stages{
-    stage('SCM') {
-    checkout scm
-  }
-  stage('SonarQube Analysis') {
-    def scannerHome = tool 'SonarQube';
-    withSonarQubeEnv() {
-      sh "${scannerHome}/bin/sonar-scanner"
+    agent any
+    stages {
+        stage('SCM') {
+            steps {
+                checkout scm
+            }
+        }
+        stage('SonarQube Analysis') {
+            steps {
+                script {
+                    def scannerHome = tool 'SonarQube'
+                    withSonarQubeEnv('SonarQube') {
+                        sh "${scannerHome}/bin/sonar-scanner"
+                    }
+                }
+            }
+        }
+        stage('OWASP Dependency-Check Vulnerabilities') {
+            steps {
+                script {
+                    dependencyCheck additionalArguments: ''' 
+                        -o './'
+                        -s './'
+                        -f 'ALL' 
+                        --prettyPrint''', odcInstallation: 'OWASP Dependency-Check Vulnerabilities'
+                    
+                    dependencyCheckPublisher pattern: 'dependency-check-report.xml'
+                }
+            }
+        }
+        // Add additional stages as necessary (like Django setup, testing, etc.)
     }
-  }
-  stage('OWASP Dependency-Check Vulnerabilities') {
-        dependencyCheck additionalArguments: ''' 
-                    -o './'
-                    -s './'
-                    -f 'ALL' 
-                    --prettyPrint''', odcInstallation: 'OWASP Dependency-Check Vulnerabilities'
-        
-        dependencyCheckPublisher pattern: 'dependency-check-report.xml'
+    post {
+        always {
+            // Post-build actions (like cleanup, notifications)
+        }
     }
-  }
 }
