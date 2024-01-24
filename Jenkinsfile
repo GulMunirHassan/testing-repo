@@ -20,7 +20,7 @@ pipeline {
                         bat 'venv\\Scripts\\activate.bat'
                     }
                     // Install dependencies
-                    sh 'pip install -r requirements'
+                    sh 'pip install -r requirments.txt'
                 }
             }
         }
