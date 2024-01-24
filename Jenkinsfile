@@ -58,7 +58,7 @@ pipeline {
                     } else {
                         bat 'venv\\Scripts\\activate.bat'
                     }
-                    sh 'python manage.py migrate'
+                    sh 'python3 manage.py migrate'
                 }
             }
         }
@@ -71,7 +71,7 @@ pipeline {
                     } else {
                         bat 'venv\\Scripts\\activate.bat'
                     }
-                    sh 'python manage.py collectstatic --noinput'
+                    sh 'python3 manage.py collectstatic --noinput'
                 }
             }
         }
@@ -84,7 +84,7 @@ pipeline {
                     } else {
                         bat 'venv\\Scripts\\activate.bat'
                     }
-                    sh 'python manage.py test'
+                    sh 'python3 manage.py test'
                 }
             }
         }
