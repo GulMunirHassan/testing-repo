@@ -89,6 +89,40 @@ pipeline {
             }
         }
 
+        stage('Build Docker Image') {
+        steps {
+            script {
+                // Set the Docker image name
+                def dockerImageName = 'gulmunir/test'
+                def dockerTag = 'latest' // or use a specific tag like '${BUILD_NUMBER}'
+
+                // Build the Docker image
+                sh "docker build -t ${dockerImageName}:${dockerTag} ."
+            }
+        }
+    }
+
+    stage('Push to Docker Hub') {
+        steps {
+            script {
+                // Set Docker Hub credentials
+                def dockerHubCredentials = 'gulmunir'
+
+                // Log in to Docker Hub
+                withCredentials([usernamePassword(credentialsId: dockerHubCredentials, usernameVariable: 'gulmunir', passwordVariable: '19cs49@munna^tech {(CS)}')]) {
+                    sh "echo $DOCKERHUB_PASSWORD | docker login -u $DOCKERHUB_USERNAME --password-stdin"
+                }
+
+                // Set the Docker image name
+                def dockerImageName = 'gulmunir/test'
+                def dockerTag = 'latest' // or use a specific tag like '${BUILD_NUMBER}'
+
+                // Push the Docker image to Docker Hub
+                sh "docker push ${dockerImageName}:${dockerTag}"
+            }
+        }
+    }
+
         // Add additional stages if necessary (like deployment)
     }
 }
