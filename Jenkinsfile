@@ -54,7 +54,7 @@ pipeline {
             steps {
                 script {
                     if (isUnix()) {
-                        sh 'source venv/bin/activate'
+                        sh 'bash -c ". venv/bin/activate"'
                     } else {
                         bat 'venv\\Scripts\\activate.bat'
                     }
@@ -67,7 +67,7 @@ pipeline {
             steps {
                 script {
                     if (isUnix()) {
-                        sh 'source venv/bin/activate'
+                        sh 'bash -c ". venv/bin/activate"'
                     } else {
                         bat 'venv\\Scripts\\activate.bat'
                     }
@@ -80,7 +80,7 @@ pipeline {
             steps {
                 script {
                     if (isUnix()) {
-                        sh 'source venv/bin/activate'
+                        sh 'bash -c ". venv/bin/activate"'
                     } else {
                         bat 'venv\\Scripts\\activate.bat'
                     }
