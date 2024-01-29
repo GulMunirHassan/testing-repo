@@ -123,6 +123,14 @@ pipeline {
         }
     }
 
+    stage('Add SSH Key') {
+            steps {
+                script {
+                    sh "ssh-keyscan -t rsa 192.168.0.110 >> ~/.ssh/known_hosts"
+                }
+            }
+        }
+
     stage('Run Ansible Playbook') {
         steps {
             script {
