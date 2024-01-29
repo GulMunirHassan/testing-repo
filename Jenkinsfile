@@ -129,7 +129,7 @@ pipeline {
                 // Assuming Ansible and required roles/collections are already installed on Jenkins server
                 // Replace 'your_playbook.yml' with the path to your Ansible playbook
                 // Replace 'your_inventory_file' with the path to your Ansible inventory or dynamically create it
-                sh 'ansible-playbook -i /etc/ansible/hosts myplaybook.yml'
+                sh 'ansible-playbook -i /etc/ansible/hosts /home/ubuntu/myplaybook.yml'
             }
         }
     }
