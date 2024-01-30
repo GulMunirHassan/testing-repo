@@ -123,20 +123,20 @@ pipeline {
         }
     }
 
-    stage('Add SSH Key') {
-            steps {
-                script {
-                    // Create the .ssh directory if it does not exist
-                    sh "mkdir -p /var/lib/jenkins/.ssh"
-                    // Set proper permissions
-                    sh "chmod 700 /var/lib/jenkins/.ssh"
-                    // Add the host key to the known_hosts file
-                    sh "ssh-keyscan -t rsa 192.168.0.110 >> /var/lib/jenkins/.ssh/known_hosts"
-                    // Set proper permissions for known_hosts file
-                    sh "chmod 644 /var/lib/jenkins/.ssh/known_hosts"
-                }
-            }
-        }
+    // stage('Add SSH Key') {
+    //         steps {
+    //             script {
+    //                 // Create the .ssh directory if it does not exist
+    //                 sh "mkdir -p /var/lib/jenkins/.ssh"
+    //                 // Set proper permissions
+    //                 sh "chmod 700 /var/lib/jenkins/.ssh"
+    //                 // Add the host key to the known_hosts file
+    //                 sh "ssh-keyscan -t rsa 192.168.0.110 >> /var/lib/jenkins/.ssh/known_hosts"
+    //                 // Set proper permissions for known_hosts file
+    //                 sh "chmod 644 /var/lib/jenkins/.ssh/known_hosts"
+    //             }
+    //         }
+    //     }
 
     stage('Run Ansible Playbook') {
         steps {
