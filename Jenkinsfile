@@ -125,7 +125,7 @@ pipeline {
 
         stage('Run Ansible Playbook') {
     steps {
-        Playbook file path in workspace
+        ansiblePlaybook disableHostKeyChecking: true, installation: 'Ansible', inventory: '/etc/ansible/hosts', playbook: '/etc/ansible/myplaybook.yml', vaultTmpPath: ''
             }
         }
     }
