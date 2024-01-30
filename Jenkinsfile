@@ -138,25 +138,51 @@ pipeline {
     //         }
     //     }
 
-    stage('Run Ansible Playbook') {
-        steps {
+
+
+
+
+        stage('Run Ansible Playbook') {
+    steps {
+        withCredentials([usernamePassword(credentialsId: 'ubuntu', usernameVariable: 'SSH_USER', passwordVariable: 'SSH_PASS')]) {
             script {
-                // Using withCredentials to securely inject username and password
-                    SSH_USER = credentials('ubuntu').username
-                    SSH_PASS = credentials('ubuntu@123').password
-                    withCredentials([usernamePassword(credentialsId: 'ubuntu', usernameVariable: 'SSH_USER', passwordVariable: 'SSH_PASS')]) {
-                        sh """
-                            ansible-playbook -i /etc/ansible/hosts /etc/ansible/myplaybook.yml --user $SSH_USER --ask-pass
-                        """
-                // Assuming Ansible and required roles/collections are already installed on Jenkins server
-                // Replace 'your_playbook.yml' with the path to your Ansible playbook
-                // Replace 'your_inventory_file' with the path to your Ansible inventory or dynamically create it
-                //sh 'ansible-playbook -i /etc/ansible/hosts /etc/ansible/myplaybook.yml'
+                sh """
+                    ansible-playbook -i /etc/ansible/hosts /etc/ansible/myplaybook.yml --user $SSH_USER --ask-pass
+                """
             }
         }
     }
+}
+
+
         
-        // Add additional stages if necessary (like deployment)
-    }
+
+
+        
+    // stage('Run Ansible Playbook') {
+    //     steps {
+    //         script {
+    //             // Using withCredentials to securely inject username and password
+    //                 SSH_USER = credentials('ubuntu').username
+    //                 SSH_PASS = credentials('ubuntu@123').password
+    //                 withCredentials([usernamePassword(credentialsId: 'ubuntu', usernameVariable: 'SSH_USER', passwordVariable: 'SSH_PASS')]) {
+    //                     sh """
+    //                         ansible-playbook -i /etc/ansible/hosts /etc/ansible/myplaybook.yml --user $SSH_USER --ask-pass
+    //                     """
+    //             // Assuming Ansible and required roles/collections are already installed on Jenkins server
+    //             // Replace 'your_playbook.yml' with the path to your Ansible playbook
+    //             // Replace 'your_inventory_file' with the path to your Ansible inventory or dynamically create it
+    //             //sh 'ansible-playbook -i /etc/ansible/hosts /etc/ansible/myplaybook.yml'
+    //         }
+    //     }
+    // }
+        
+    //     // Add additional stages if necessary (like deployment)
+    // }
+
+
+
+
+        
 }
 }
