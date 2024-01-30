@@ -125,6 +125,8 @@ pipeline {
 
         stage('Run Ansible Playbook') {
     steps {
+        SSH_USER = credentials('ubuntu').username
+        SSH_PASS = credentials('ubuntu@123').password
         withCredentials([usernamePassword(credentialsId: 'ubuntu', usernameVariable: 'SSH_USER', passwordVariable: 'SSH_PASS')]) {
             script {
                 sh """
