@@ -140,14 +140,10 @@ pipeline {
 
     stage('Run Ansible Playbook') {
         steps {
-             environment {
-                    ANSIBLE_HOST_KEY_CHECKING = "False"
-                 // Assuming you have stored SSH credentials with ID 'your-credentials-id' in Jenkins
-                    SSH_USER = credentials('ubuntu').username
-                    SSH_PASS = credentials('ubuntu@123').password
-                }
             script {
                 // Using withCredentials to securely inject username and password
+                    SSH_USER = credentials('ubuntu').username
+                    SSH_PASS = credentials('ubuntu@123').password
                     withCredentials([usernamePassword(credentialsId: 'ubuntu', usernameVariable: 'SSH_USER', passwordVariable: 'SSH_PASS')]) {
                         sh """
                             ansible-playbook -i /etc/ansible/hosts /etc/ansible/myplaybook.yml --user $SSH_USER --ask-pass
