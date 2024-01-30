@@ -125,13 +125,7 @@ pipeline {
 
         stage('Run Ansible Playbook') {
     steps {
-        SSH_USER = credentials('ubuntu').username
-        SSH_PASS = credentials('ubuntu@123').password
-        withCredentials([usernamePassword(credentialsId: 'ubuntu', usernameVariable: 'SSH_USER', passwordVariable: 'SSH_PASS')]) {
-            script {
-                sh """
-                    ansible-playbook -i /etc/ansible/hosts /etc/ansible/myplaybook.yml --user $SSH_USER --ask-pass
-                """
+        Playbook file path in workspace
             }
         }
     }
