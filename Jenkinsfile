@@ -140,10 +140,10 @@ pipeline {
 
     stage('Run Ansible Playbook') {
         steps {
-            script {
              environment {
                     ANSIBLE_HOST_KEY_CHECKING = "False"
                 }
+            script {
                 // Using withCredentials to securely inject username and password
                     withCredentials([usernamePassword(credentialsId: 'ubuntu', usernameVariable: 'SSH_USER', passwordVariable: 'SSH_PASS')]) {
                         sh """
