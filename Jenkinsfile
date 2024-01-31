@@ -126,12 +126,11 @@ pipeline {
        stage('Run Ansible Playbook') {
             steps {
                 script {
-                    withCredentials([sshUserPrivateKey(credentialsId: 'ansible', keyFileVariable: 'SSH_KEY'), 
-                                     string(credentialsId: 'your-become-password-id', variable: 'BECOME_PASS')]) {
-                        sh """
-                           export ANSIBLE_HOST_KEY_CHECKING=False
-                           ansible-playbook /etc/ansible/myplaybook.yml --private-key=$SSH_KEY --ask-become-pass
-                        """
+            withCredentials([sshUserPrivateKey(credentialsId: 'ansible', keyFileVariable: 'SSH_KEY')]) {
+                sh """
+                   export ANSIBLE_HOST_KEY_CHECKING=False
+                   ansible-playbook /etc/ansible/myplaybook.yml --private-key=$SSH_KEY
+                """
                     }
                 }
             }
