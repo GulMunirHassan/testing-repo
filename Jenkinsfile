@@ -127,7 +127,7 @@ pipeline {
             steps {
                 script {
                     withCredentials([sshUserPrivateKey(credentialsId: 'ansible', keyFileVariable: 'SSH_KEY'), 
-                                     string(credentialsId: 'ansible', variable: 'BECOME_PASS')]) {
+                                     string(credentialsId: 'ubuntu', variable: 'BECOME_PASS')]) {
                         sh """
                            export ANSIBLE_HOST_KEY_CHECKING=False
                            ansible-playbook /etc/ansible/myplaybook.yml --private-key=$SSH_KEY --ask-become-pass
