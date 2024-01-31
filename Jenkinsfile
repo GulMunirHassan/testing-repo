@@ -123,9 +123,17 @@ pipeline {
         }
     }
 
-        stage('Run Ansible Playbook') {
-    steps {
-        ansiblePlaybook disableHostKeyChecking: true, installation: 'Ansible', inventory: '/etc/ansible/hosts', playbook: '/etc/ansible/myplaybook.yml', vaultTmpPath: ''
+       stage('Run Ansible Playbook') {
+            steps {
+                script {
+                    withCredentials([sshUserPrivateKey(credentialsId: 'ansible', keyFileVariable: 'SSH_KEY'), 
+                                     string(credentialsId: 'ubuntu@123', variable: 'BECOME_PASS')]) {
+                        sh """
+                           export ANSIBLE_HOST_KEY_CHECKING=False
+                           ansible-playbook /etc/ansible/myplaybook.yml --private-key=$SSH_KEY --ask-become-pass
+                        """
+                    }
+                }
             }
         }
     }
